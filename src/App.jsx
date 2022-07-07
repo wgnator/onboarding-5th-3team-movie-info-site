@@ -1,15 +1,8 @@
-import React from 'react';
-import { useMovieModel } from './models/useMovieModel';
-import Router from './Router'
+import React from "react";
+import Router from "./Router";
 
 function App() {
-  const { movies , getMovies} = useMovieModel();
-  React.useEffect(()=>{
-    getMovies()
-  },[])
-  return (
-        <Router />
-  );
+  return <Router />;
 }
 
 export default App;
