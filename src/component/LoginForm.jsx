@@ -5,6 +5,22 @@ import styled from "styled-components";
 import { saveToken } from "../utils/library";
 import { checkValidation, errorMessages } from "../utils/validation";
 
+export const checkError = (errors) => Object.values(errors).find(Boolean);
+export const checkPassword = (dbPassword, inputPassword) =>
+  dbPassword === inputPassword;
+
+export const validInput = (ref, setErrors) => {
+  const { name, value } = ref.current;
+  if (!checkValidation(name, value)) {
+    setErrors((prevState) => ({
+      ...prevState,
+      [name]: errorMessages[name],
+    }));
+    return;
+  }
+  setErrors((prevState) => ({ ...prevState, [name]: false }));
+};
+
 function LoginForm({ users }) {
   const [errors, setErrors] = useState({
     email: true,
@@ -15,13 +31,9 @@ function LoginForm({ users }) {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
-  const checkError = () => Object.values(errors).find(Boolean);
-  const checkPassword = (dbPassword, inputPassword) =>
-    dbPassword === inputPassword;
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (checkError()) return;
+    if (checkError(errors)) return;
 
     const inputEmail = emailRef.current.value;
     const user = users.find((user) => user.email === inputEmail);
@@ -42,19 +54,6 @@ function LoginForm({ users }) {
     navigate("/");
   };
 
-  const validInput = (ref) => {
-    const { name, value } = ref.current;
-    if (!checkValidation(name, value)) {
-      setErrors((prevState) => ({
-        ...prevState,
-        [name]: errorMessages[name],
-      }));
-      return;
-    }
-    setErrors((prevState) => ({ ...prevState, [name]: false }));
-  };
-  console.log("login");
-
   return (
     <Form onSubmit={handleSubmit}>
       <Title>로그인</Title>
@@ -64,7 +63,7 @@ function LoginForm({ users }) {
             name="email"
             type={"text"}
             ref={emailRef}
-            onChange={() => validInput(emailRef)}
+            onChange={() => validInput(emailRef, setErrors)}
             error={errors.email}
           />
           <span>이메일 주소</span>
@@ -74,7 +73,7 @@ function LoginForm({ users }) {
             name="password"
             type={"password"}
             ref={passwordRef}
-            onChange={() => validInput(passwordRef)}
+            onChange={() => validInput(passwordRef, setErrors)}
             error={errors.password}
           />
           <span>비밀번호</span>
@@ -94,7 +93,7 @@ function LoginForm({ users }) {
 
 export default LoginForm;
 
-const Form = styled.form`
+export const Form = styled.form`
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -104,13 +103,13 @@ const Form = styled.form`
   background-color: black;
   border-radius: 4px;
 `;
-const Title = styled.h2`
+export const Title = styled.h2`
   color: white;
   font-size: 2rem;
   font-weight: 700;
   width: 100%;
 `;
-const InputContainer = styled.div`
+export const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -129,7 +128,7 @@ const InputContainer = styled.div`
     }
   }
 `;
-const Input = styled.input`
+export const Input = styled.input`
   border-radius: 6px;
   border: transparent;
   border-bottom: 4px solid white;
@@ -142,7 +141,7 @@ const Input = styled.input`
   border-bottom-color: ${(props) => (props.error ? "orange" : "white")};
 `;
 
-const ButtonContainer = styled.div`
+export const ButtonContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -160,7 +159,7 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const Button = styled.button`
+export const Button = styled.button`
   background-color: red;
   border-radius: 6px;
   border: transparent;
