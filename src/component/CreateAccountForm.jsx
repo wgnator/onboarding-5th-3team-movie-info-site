@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { saveToken } from "../utils/library";
 import { checkValidation, errorMessages } from "../utils/validation";
 
-function LoginForm({ users }) {
+function CreateAccountForm({ users }) {
   const [errors, setErrors] = useState({
     email: true,
     password: true,
@@ -16,8 +16,8 @@ function LoginForm({ users }) {
   const passwordRef = useRef(null);
 
   const checkError = () => Object.values(errors).find(Boolean);
-  const checkPassword = (dbPassword, inputPassword) =>
-    dbPassword === inputPassword;
+
+  const createAccount = ({ email, password }) => {};
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -32,12 +32,8 @@ function LoginForm({ users }) {
       }));
 
     const inputPassword = passwordRef.current.value;
-    if (!checkPassword(user.password, inputPassword))
-      return setErrors((prevState) => ({
-        ...prevState,
-        worning: errorMessages["password"],
-      }));
 
+    createAccount({ email: inputEmail, password: inputPassword });
     saveToken({ email: inputEmail });
     navigate("/");
   };
@@ -80,18 +76,13 @@ function LoginForm({ users }) {
         </div>
       </InputContainer>
       <ButtonContainer>
-        <Button type={"submit"}>로그인</Button>
-        <div>
-          <Link to={""} onClick={() => alert("구현 중")}>
-            회원가입
-          </Link>
-        </div>
+        <Button type={"submit"}>회원가입</Button>
       </ButtonContainer>
     </Form>
   );
 }
 
-export default LoginForm;
+export default CreateAccountForm;
 
 const Form = styled.form`
   display: flex;
