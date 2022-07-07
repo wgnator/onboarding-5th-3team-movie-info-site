@@ -14,6 +14,7 @@ export const regex = {
 export const errorMessages = {
   email: "정확한 이메일 주소를 입력하세요",
   password: "비밀번호는 숫자, 대문자, 특수 문자 포함 8자 이상입니다",
+  duplicateEmail: "이미 가입된 이메일 주소입니다",
 };
 
 export const checkValidation = (name, value) => regex[name].test(value);

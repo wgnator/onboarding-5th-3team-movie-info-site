@@ -9,10 +9,41 @@ import {
   checkError,
   Form,
   Input,
+  InputBox,
   InputContainer,
   Title,
   validInput,
+  Worning,
 } from "./LoginForm";
+
+const createUser = ({ id, email, password }) => ({
+  id,
+  email,
+  password,
+  watched: [],
+  likes: [],
+  favorites: [],
+});
+const createUserId = (users) => users.sort((a, b) => b.id - a.id)[0].id + 1;
+
+const createAccount = ({ id, email, password }) => {
+  const user = createUser({ id, email, password });
+
+  fetch("http://localhost:8000/users", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("성공:", data);
+    })
+    .catch((error) => {
+      console.error("실패:", error);
+    });
+};
 
 function CreateAccountForm({ users }) {
   const [errors, setErrors] = useState({
@@ -24,24 +55,26 @@ function CreateAccountForm({ users }) {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
-  // 할일: createAccount 함수 완성
-  const createAccount = ({ email, password }) => {};
-
   const handleSubmit = (event) => {
     event.preventDefault();
     if (checkError(errors)) return;
 
     const inputEmail = emailRef.current.value;
     const user = users.find((user) => user.email === inputEmail);
-    if (!user)
+    // 할일: 가입된 email이 존재하는지 검증하는 건 fetch쪽으로 분리
+    if (user)
       return setErrors((prevState) => ({
         ...prevState,
-        worning: errorMessages["email"],
+        worning: errorMessages.duplicateEmail,
       }));
 
     const inputPassword = passwordRef.current.value;
 
-    createAccount({ email: inputEmail, password: inputPassword });
+    createAccount({
+      id: createUserId(users),
+      email: inputEmail,
+      password: inputPassword,
+    });
     saveToken({ email: inputEmail });
     navigate("/");
   };
@@ -50,7 +83,8 @@ function CreateAccountForm({ users }) {
     <Form onSubmit={handleSubmit}>
       <Title>계정 만들기</Title>
       <InputContainer>
-        <div>
+        {errors.worning && <Worning>{errors.worning}</Worning>}
+        <InputBox>
           <Input
             name="email"
             type={"text"}
@@ -59,8 +93,8 @@ function CreateAccountForm({ users }) {
             error={errors.email}
           />
           <span>이메일 주소</span>
-        </div>
-        <div>
+        </InputBox>
+        <InputBox>
           <Input
             name="password"
             type={"password"}
@@ -69,7 +103,7 @@ function CreateAccountForm({ users }) {
             error={errors.password}
           />
           <span>비밀번호</span>
-        </div>
+        </InputBox>
       </InputContainer>
       <ButtonContainer>
         <Button type={"submit"}>회원가입</Button>

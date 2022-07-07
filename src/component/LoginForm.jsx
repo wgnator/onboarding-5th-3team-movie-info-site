@@ -12,12 +12,17 @@ export const checkPassword = (dbPassword, inputPassword) =>
 export const validInput = (ref, setErrors) => {
   const { name, value } = ref.current;
   if (!checkValidation(name, value)) {
-    setErrors((prevState) => ({
+    return setErrors((prevState) => ({
       ...prevState,
-      [name]: errorMessages[name],
+      [name]: true,
+      worning: errorMessages[name],
     }));
-    return;
   }
+  setErrors((prevState) => ({
+    ...prevState,
+    [name]: false,
+    worning: "",
+  }));
   setErrors((prevState) => ({ ...prevState, [name]: false }));
 };
 
@@ -58,7 +63,8 @@ function LoginForm({ users }) {
     <Form onSubmit={handleSubmit}>
       <Title>로그인</Title>
       <InputContainer>
-        <div>
+        {errors.worning && <Worning>{errors.worning}</Worning>}
+        <InputBox>
           <Input
             name="email"
             type={"text"}
@@ -67,8 +73,8 @@ function LoginForm({ users }) {
             error={errors.email}
           />
           <span>이메일 주소</span>
-        </div>
-        <div>
+        </InputBox>
+        <InputBox>
           <Input
             name="password"
             type={"password"}
@@ -77,14 +83,12 @@ function LoginForm({ users }) {
             error={errors.password}
           />
           <span>비밀번호</span>
-        </div>
+        </InputBox>
       </InputContainer>
       <ButtonContainer>
         <Button type={"submit"}>로그인</Button>
         <div>
-          <Link to={""} onClick={() => alert("구현 중")}>
-            회원가입
-          </Link>
+          <Link to={"/account/create"}>회원가입</Link>
         </div>
       </ButtonContainer>
     </Form>
@@ -110,23 +114,28 @@ export const Title = styled.h2`
   width: 100%;
 `;
 export const InputContainer = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
   gap: 14px;
-  div {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-
-    span {
-      color: gray;
-      font-size: 12px;
-      top: 6px;
-      left: 20px;
-      position: absolute;
-    }
+  span {
+    color: gray;
+    font-size: 12px;
+    top: 6px;
+    left: 20px;
+    position: absolute;
   }
+`;
+export const InputBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+`;
+export const Worning = styled.div`
+  color: orange;
+  position: absolute;
+  top: -2rem;
 `;
 export const Input = styled.input`
   border-radius: 6px;
