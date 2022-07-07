@@ -1,22 +1,20 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Favorites from "./component/favorites";
-import CreateAccount from "./pages/CreateAccount";
-import Login from "./pages/Login";
-import Main from "./pages/main";
-import NotFound from "./pages/NotFound";
 import { getToken } from "./utils/library";
+import Main from "./pages/main";
+import Card from "./component/card";
+import Login from "./pages/Login";
+import CreateAccount from "./pages/CreateAccount";
+import NotFound from "./pages/NotFound";
 
 export default function Router() {
   const [users, setUsers] = useState();
   const loggedInUser = getToken();
-
   const getUsers = async () => {
     fetch("http://localhost:8000/users")
       .then((res) => res.json())
       .then((json) => setUsers(json));
   };
-
   useEffect(() => {
     getUsers();
   }, []);
@@ -24,8 +22,10 @@ export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/favorites" element={<Favorites />} />
+        <Route path="/" element={<Main />}>
+          <Route path=":movieId" element={<Card />} />
+          <Route path="/favorites" element={<Main favorites={true} />} />
+        </Route>
         {!loggedInUser && (
           <>
             <Route path="/login" element={<Login users={users} />} />
