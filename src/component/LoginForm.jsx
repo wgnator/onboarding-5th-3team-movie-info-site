@@ -2,12 +2,10 @@ import { useState } from "react";
 import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { saveToken } from "../utils/library";
+import { checkExistEmail, checkPassword, login } from "../models/AccessUserDB";
 import { checkValidation, errorMessages } from "../utils/validation";
 
 export const checkError = (errors) => Object.values(errors).find(Boolean);
-export const checkPassword = (dbPassword, inputPassword) =>
-  dbPassword === inputPassword;
 
 export const validInput = (ref, setErrors) => {
   const { name, value } = ref.current;
@@ -26,7 +24,7 @@ export const validInput = (ref, setErrors) => {
   setErrors((prevState) => ({ ...prevState, [name]: false }));
 };
 
-function LoginForm({ users }) {
+function LoginForm() {
   const [errors, setErrors] = useState({
     email: true,
     password: true,
@@ -36,26 +34,25 @@ function LoginForm({ users }) {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (checkError(errors)) return;
 
-    const inputEmail = emailRef.current.value;
-    const user = users.find((user) => user.email === inputEmail);
-    if (!user)
+    const email = emailRef.current.value;
+    if (!(await checkExistEmail(email)))
       return setErrors((prevState) => ({
         ...prevState,
         worning: errorMessages["email"],
       }));
 
-    const inputPassword = passwordRef.current.value;
-    if (!checkPassword(user.password, inputPassword))
+    const password = passwordRef.current.value;
+    if (!(await checkPassword(email, password)))
       return setErrors((prevState) => ({
         ...prevState,
         worning: errorMessages["password"],
       }));
 
-    saveToken({ email: inputEmail });
+    await login(email);
     navigate("/");
   };
 
