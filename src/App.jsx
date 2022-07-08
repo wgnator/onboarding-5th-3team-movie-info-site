@@ -1,8 +1,4 @@
-
-import { useState, useEffect } from "react";
-import Router from "./Router";
-import Main from "./pages/main";
-import Navigation from "./component/navigation";
+import Router from './Router';
 
 function App() {
   return (
