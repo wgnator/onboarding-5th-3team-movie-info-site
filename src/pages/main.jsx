@@ -1,47 +1,65 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
-
-import { useMovieModel } from '../models/useMovieModel';
-
-import Thumbnail from '../component/Thumbnail';
+import React, { useEffect } from "react";
+import styled from "styled-components";
+import { useParams } from "react-router-dom";
+import { useMovieModel } from "../models/useMovieModel";
+import Navigation from "../component/navigation";
+import Thumbnail from "../component/thumbnail";
+import { useState } from "react";
+import Card from "../component/card";
+import { FAVORITES_TAP, SEARCH_TAP } from "../const/consts";
+import Favorites from "../component/favorites";
 
 export default function Main() {
-  const { movies, searchMovies } = useMovieModel();
-
+  const { movies, getMovies, searchMovies } = useMovieModel();
+  const [selectedTap, setSelectedTap] = useState(SEARCH_TAP);
   const { movieTitle } = useParams();
-  // 이성진
- const [loggedInUser, setLoggedInUser] = useState(false);
+  const [card, setCard] = useState(false);
 
-  const logout = () => {
-    removeToken();
-    setLoggedInUser(false);
-  };
   useEffect(() => {
-    setLoggedInUser(getLoggedInUser());
-  }, []);
-  //
-  useEffect(() => {
-    searchMovies(movieTitle);
+    if (movieTitle) {
+      searchMovies(movieTitle);
+    }
   }, [movieTitle]);
 
-  if (!movies?.results.length) {
-    return <div>없음</div>;
-  }
+  useEffect(() => {
+    getMovies();
+  }, []);
 
   return (
-    <ThumbnailList>
-      {movies?.results.map((movie) => (
-        <Thumbnail key={movie.id} movie={movie} />
-      ))}
-    </ThumbnailList>
+    <Container>
+      <Navigation selectedTap={selectedTap} setSelectedTap={setSelectedTap} />
+      <Contents>
+        {selectedTap === SEARCH_TAP && (
+          <>
+            {!movies && <p>영화 목록이 없습니다</p>}
+            {movies &&
+              movies.results?.map((movie) => (
+                <Thumbnail key={movie.id} movie={movie} setCard={setCard} />
+              ))}
+            {card && <Card movieId={card} closeAction={() => setCard(false)} />}
+          </>
+        )}
+        {selectedTap === FAVORITES_TAP && <Favorites />}
+      </Contents>
+    </Container>
   );
 }
 
-const ThumbnailList = styled.ul`
-  width: 85vw;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-gap: 20px;
+const Container = styled.div`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: red;
+`;
+const Contents = styled.div`
+  overflow-y: scroll;
+  padding: 0 2rem;
+  gap: 2rem;
+  height: 100%;
+  padding-top: 80px;
+  padding-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 `;

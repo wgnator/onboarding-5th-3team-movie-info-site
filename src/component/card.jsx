@@ -1,38 +1,55 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import theme from "../theme";
 import { useMovieModel } from "../models/useMovieModel";
-import { useNavigate } from "react-router-dom";
 import CloseIcon from "../images/icons/close-icon.png";
 import PlusIcon from "../images/icons/plus-icon.png";
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
 
-export default function Card({ movieId }) {
-  const navigate = useNavigate();
+export default function Card({ movieId, closeAction }) {
   const { movie, getMovieById } = useMovieModel();
 
   useEffect(() => {
     getMovieById(movieId);
-  }, []);
+  }, [movieId]);
 
+  const closeCard = () => closeAction();
+
+  console.log("card", movieId, movie);
   return (
     <Modal>
-      <Image src={`${IMAGE_BASE_URL}${movie?.backdrop_path}`} alt="movie image" />
+      <Image
+        src={`${IMAGE_BASE_URL}${movie?.backdrop_path}`}
+        alt="movie image"
+      />
       <MovieInfo>
         <PlusButton src={PlusIcon} />
         <H1>{movie?.original_title}</H1>
         <H2>{movie?.tagline}</H2>
-        <Tag>{movie?.status === "Released" ? new Date(movie?.release_date).getFullYear() : "unreleased"}</Tag>
+        <Tag>
+          {movie?.status === "Released"
+            ? new Date(movie?.release_date).getFullYear()
+            : "unreleased"}
+        </Tag>
         <Tag>{movie?.runtime}min</Tag>
         {movie?.genres.map((gnere) => (
           <Tag>{gnere.name}</Tag>
         ))}
         <Description>{movie?.overview}</Description>
-        <p>Production Countries : {movie?.production_countries.map((country) => country.name).join(", ")}</p>
-        <p>Production Company : {movie?.production_companies.map((company) => company.name).join(", ")}</p>
+        <p>
+          Production Countries :{" "}
+          {movie?.production_countries
+            .map((country) => country.name)
+            .join(", ")}
+        </p>
+        <p>
+          Production Company :{" "}
+          {movie?.production_companies
+            .map((company) => company.name)
+            .join(", ")}
+        </p>
       </MovieInfo>
-      <CloseButton src={CloseIcon} onClick={() => navigate("/")} />
+      <CloseButton src={CloseIcon} onClick={closeCard} />
     </Modal>
   );
 }

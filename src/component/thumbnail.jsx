@@ -1,14 +1,11 @@
-import React from 'react';
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import styled from "styled-components";
 
-export default function Thumbnail({ movie }) {
-  const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/original';
-
-  const navigate = useNavigate();
+export default function Thumbnail({ movie, setCard }) {
+  const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
 
   const handleThumbnailClick = (movieId) => {
-    navigate(`/detail/${movieId}`);
+    setCard(movieId);
   };
 
   return (
@@ -20,12 +17,13 @@ export default function Thumbnail({ movie }) {
 }
 
 const ThumbnailContainer = styled.li`
+  width: 200px;
+  height: 400px;
   display: flex;
   flex-direction: column;
-  background-color: gray;
   border: 1px solid grey;
   border-radius: 5px;
-  padding: 25px;
+  padding: 10px;
   cursor: pointer;
   -moz-osx-font-smoothing: grayscale;
   backface-visibility: hidden;
