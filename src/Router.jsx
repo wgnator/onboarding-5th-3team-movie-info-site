@@ -11,7 +11,7 @@ export default function Router() {
       <Routes>
         <Route path="/" element={<Main />}>
           <Route path="search/:movieTitle" element={<Main />} />
-          <Route path="favorites" element={<p>hello</p>} />
+          <Route path="/favorites" element={<Main favorites={true} />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/account/create" element={<CreateAccount />} />

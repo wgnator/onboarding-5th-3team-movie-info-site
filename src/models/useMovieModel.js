@@ -21,7 +21,7 @@ export const useMovieModel = () => {
   };
 
   const getMovieById = async (id) => {
-    movieDataService.get(`/movie/${id}`, {}, getMovieByIdCallback);
+    movieDataService.get(`/movie/${id}`, getMovieByIdCallback);
   };
 
   // 작동안됨

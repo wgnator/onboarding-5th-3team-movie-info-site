@@ -6,7 +6,7 @@ import PlusIcon from "../images/icons/plus-icon.png";
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
 
-export default function Card({ movieId, closeAction }) {
+export default function Card({ movieId, setSelectedMovieId , closeAction }) {
   const { movie, getMovieById } = useMovieModel();
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function Card({ movieId, closeAction }) {
         alt="movie image"
       />
       <MovieInfo>
-        <PlusButton src={PlusIcon} />
+        <PlusButton src={PlusIcon} onClick={() => {}} />
         <H1>{movie?.original_title}</H1>
         <H2>{movie?.tagline}</H2>
         <Tag>
