@@ -1,6 +1,6 @@
 # 영화 정보 사이트
 
-## 1. 기능 정의
+## 1. 필수 기능 정의
 
 - 해당 사이트는 총 두개의 탭을 가집니다. (`검색`, `즐겨찾기`)
 
@@ -39,3 +39,33 @@
 <img src="https://user-images.githubusercontent.com/77876601/177663752-5ed781ce-7696-48e7-9a1b-0ef82b10bea0.jpeg"  width="30%">
 <img src="https://user-images.githubusercontent.com/77876601/177663754-bd34ec5d-36ec-402a-bac8-f710e512ad6e.jpeg"  width="30%">
 </p>
+
+## 2. 팀에서 추가한 기능
+
+### 2.A. 사용자
+
+- JSON Database에 사용자 정보 저장(User Model)
+- 로그인 기능
+  - 사용자계정(email 형식), 비밀번호 검증
+  - 검증 실패 시 경고 출력
+  - 로그인 후 localStorage에 토큰 저장(email을 저장함)
+  - localStorage에서 토큰 불러오는 함수 추가
+- 계정 생성 기능
+  - 로그인 페이지와 구조가 거의 같아 로그인 페이지에서 styled components와 함수 일부 import해서 재사용
+
+```typescript
+// model interface, JSON Database에 이 형태로 저장
+interface User {
+  id: number;
+  email: string;
+  password: string;
+  watched: Array<{ id: number; numberOfWached: number }>;
+  likes: Array<number>;
+  favorites: Array<number>;
+}
+```
+
+- likes : 유저는 영화 하나 당 한 번 like를 할 수 있고, user medel에 like한 영화의 id가 저장
+- favorites : like와 같다
+- (선택) watched : 영화를 시청한 횟수를 기록한다
+- (선택) 검색 기능에서 해당 정보를 불러와 내가 봤던 영화를 표시할 수 있다
