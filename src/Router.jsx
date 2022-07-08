@@ -25,6 +25,7 @@ export default function Router() {
         <Route path="/" element={<Main />}>
           <Route path=":movieId" element={<Card />} />
           <Route path="/favorites" element={<Main favorites={true} />} />
+          <Route path="/search/:movie" element={<Card />} />
         </Route>
         {!loggedInUser && (
           <>
