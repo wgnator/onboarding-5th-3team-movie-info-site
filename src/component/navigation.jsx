@@ -5,8 +5,10 @@ import {ReactComponent as SearchIco} from '../images/icons/search-svgrepo-com.sv
 import {ReactComponent as LogoIco} from '../images/icons/netflix-svgrepo-com.svg'
 import { useRef } from 'react';
 import { useMovieModel } from '../models/useMovieModel';
+import LoginButton from './LoginButton';
 
-export default function Navigation(){
+
+export default function Navigation({selectedTap,setSelectedTap}){
   const { getMovies, movies } = useMovieModel(); 
   const [relatedSearch,setRelatedSearch] = useState();
   const [isLoading,setIsLoading] = useState(true);
@@ -119,7 +121,7 @@ const Container = styled.header`
   position: fixed;
   height: 70px;
   width: 100%;
-  background-color: ${theme.backColor};
+  background-color: #262633;
   border-bottom: 2px solid black;
   top: 0;
   z-index: 10;
