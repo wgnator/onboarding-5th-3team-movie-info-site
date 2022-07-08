@@ -10,7 +10,17 @@ export default function Main() {
   const { movies, searchMovies } = useMovieModel();
 
   const { movieTitle } = useParams();
+  // 이성진
+ const [loggedInUser, setLoggedInUser] = useState(false);
 
+  const logout = () => {
+    removeToken();
+    setLoggedInUser(false);
+  };
+  useEffect(() => {
+    setLoggedInUser(getLoggedInUser());
+  }, []);
+  //
   useEffect(() => {
     searchMovies(movieTitle);
   }, [movieTitle]);

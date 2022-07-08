@@ -1,17 +1,17 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginForm from "../component/LoginForm";
-import { getToken } from "../utils/library";
+import { getLoggedInUser } from "../utils/library";
 
-function Login({ users }) {
+function Login() {
   const navigate = useNavigate();
 
-  const token = getToken();
+  const token = getLoggedInUser();
   useEffect(() => {
     if (token) navigate("/");
   }, []);
 
-  return <LoginForm users={users} />;
+  return <LoginForm />;
 }
 
 export default Login;
