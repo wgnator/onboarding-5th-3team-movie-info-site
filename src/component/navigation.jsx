@@ -1,3 +1,4 @@
+
 import React,{useState} from 'react'
 import styled from 'styled-components'
 import {ReactComponent as SearchIco} from '../images/icons/search-svgrepo-com.svg'
@@ -105,16 +106,23 @@ export default function Navigation(){
           </div> :
           <div>즐겨찾기</div>}
         </FavoriteWrap>
-        
+        <LoginButton
+          selectedTap={selectedTap}
+          setSelectedTap={setSelectedTap}
+        />
       </Wrap>
     </Container>
-  )
+  );
 }
 
 const Container = styled.header`
   position: fixed;
+  height: 70px;
   width: 100%;
-  background-color: ${(props) => props.theme.backColor};
+  background-color: ${theme.backColor};
+  border-bottom: 2px solid black;
+  top: 0;
+  z-index: 10;
 `;
 const Wrap = styled.div`
   display: flex;
@@ -129,25 +137,25 @@ const LogoWrap = styled.div`
   transition: all 400ms ease;
   cursor: pointer;
   height: 30px;
-  svg{
+  svg {
     fill: white;
     width: 30px;
     height: 30px;
   }
-  span{
+  span {
     margin-left: 5px;
   }
   @keyframes blink-effect {
-  50% {
-    opacity: 0;
+    50% {
+      opacity: 0;
     }
   }
 
-  :hover{
+  :hover {
     color: yellow;
     animation: blink-effect 2s ease infinite;
   }
-`
+`;
 const SearchWrap = styled.div`
   position: relative;
   @media (max-width:768px) {
@@ -180,7 +188,6 @@ const SearchWrap = styled.div`
     height: 24px;
     padding: 4px;
   }
-
 `;
 const SearchBox = styled.div`
   position: absolute;
@@ -240,7 +247,6 @@ const SearchItem = styled.div`
     font-size: 16px;
   `}
 `;
-
 const FavoriteWrap = styled.div`
   margin-left: 15px;
   font-size: 18px;

@@ -1,17 +1,29 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import LoginForm from "../component/LoginForm";
-import { getToken } from "../utils/library";
+import { getLoggedInUser } from "../utils/library";
 
-function Login({ users }) {
+function Login() {
   const navigate = useNavigate();
 
-  const token = getToken();
+  const token = getLoggedInUser();
   useEffect(() => {
     if (token) navigate("/");
   }, []);
 
-  return <LoginForm users={users} />;
+  return (
+    <Container>
+      <LoginForm />
+    </Container>
+  );
 }
 
 export default Login;
+
+const Container = styled.div`
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

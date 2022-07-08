@@ -2,12 +2,11 @@ import { useState } from "react";
 import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { saveToken } from "../utils/library";
+import { checkExistEmail, checkPassword, login } from "../models/AccessUserDB";
+import { theme } from "../theme";
 import { checkValidation, errorMessages } from "../utils/validation";
 
 export const checkError = (errors) => Object.values(errors).find(Boolean);
-export const checkPassword = (dbPassword, inputPassword) =>
-  dbPassword === inputPassword;
 
 export const validInput = (ref, setErrors) => {
   const { name, value } = ref.current;
@@ -26,7 +25,7 @@ export const validInput = (ref, setErrors) => {
   setErrors((prevState) => ({ ...prevState, [name]: false }));
 };
 
-function LoginForm({ users }) {
+function LoginForm() {
   const [errors, setErrors] = useState({
     email: true,
     password: true,
@@ -36,26 +35,25 @@ function LoginForm({ users }) {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (checkError(errors)) return;
 
-    const inputEmail = emailRef.current.value;
-    const user = users.find((user) => user.email === inputEmail);
-    if (!user)
+    const email = emailRef.current.value;
+    if (!(await checkExistEmail(email)))
       return setErrors((prevState) => ({
         ...prevState,
         worning: errorMessages["email"],
       }));
 
-    const inputPassword = passwordRef.current.value;
-    if (!checkPassword(user.password, inputPassword))
+    const password = passwordRef.current.value;
+    if (!(await checkPassword(email, password)))
       return setErrors((prevState) => ({
         ...prevState,
         worning: errorMessages["password"],
       }));
 
-    saveToken({ email: inputEmail });
+    await login(email);
     navigate("/");
   };
 
@@ -86,7 +84,12 @@ function LoginForm({ users }) {
         </InputBox>
       </InputContainer>
       <ButtonContainer>
-        <Button type={"submit"}>로그인</Button>
+        <Button
+          isActive={!errors.email && !errors.password && !errors.worning}
+          type={"submit"}
+        >
+          로그인
+        </Button>
         <div>
           <Link to={"/account/create"}>회원가입</Link>
         </div>
@@ -98,13 +101,15 @@ function LoginForm({ users }) {
 export default LoginForm;
 
 export const Form = styled.form`
+  border-radius: 10px;
+  overflow: hidden;
   display: flex;
   align-items: center;
   flex-direction: column;
   gap: 2rem;
   max-width: 450px;
   padding: 60px 65px;
-  background-color: black;
+  background-color: ${theme.loginBackGroundColor};
   border-radius: 4px;
 `;
 export const Title = styled.h2`
@@ -112,6 +117,7 @@ export const Title = styled.h2`
   font-size: 2rem;
   font-weight: 700;
   width: 100%;
+  background-color: transparent;
 `;
 export const InputContainer = styled.div`
   position: relative;
@@ -125,6 +131,7 @@ export const InputContainer = styled.div`
     top: 6px;
     left: 20px;
     position: absolute;
+    background-color: transparent;
   }
 `;
 export const InputBox = styled.div`
@@ -136,6 +143,8 @@ export const Worning = styled.div`
   color: orange;
   position: absolute;
   top: -2rem;
+  background-color: transparent;
+  font-size: 12px;
 `;
 export const Input = styled.input`
   border-radius: 6px;
@@ -155,9 +164,11 @@ export const ButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 14px;
+  background-color: transparent;
   div {
     display: flex;
     justify-content: flex-end;
+    background-color: transparent;
   }
   a {
     color: white;
@@ -169,7 +180,7 @@ export const ButtonContainer = styled.div`
 `;
 
 export const Button = styled.button`
-  background-color: red;
+  background-color: ${(props) => (props.isActive ? "red" : "#dd7676")};
   border-radius: 6px;
   border: transparent;
   font-size: 1rem;
