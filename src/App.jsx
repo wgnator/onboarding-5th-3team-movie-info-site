@@ -14,9 +14,8 @@ function App() {
     const data = await AccessUserDB.getUsers();
     setData(data);
   }
-  // return <Router />;
+  return <Router />;
 
-  return <>{JSON.stringify(data)}</>;
 }
 
 export default App;
