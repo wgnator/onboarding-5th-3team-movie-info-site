@@ -1,17 +1,17 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
-
-import { useMovieModel } from '../models/useMovieModel';
-
-import Thumbnail from '../component/Thumbnail';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { useParams } from "react-router-dom";
+import { removeToken, getLoggedInUser } from "../utils/library";
+import { useMovieModel } from "../models/useMovieModel";
+import Thumbnail from "../component/thumbnail";
+import Card from "../component/card";
 
 export default function Main() {
   const { movies, searchMovies } = useMovieModel();
-
+  const [selectedMovieId, setSelectedMovieId] = useState(null);
   const { movieTitle } = useParams();
   // 이성진
- const [loggedInUser, setLoggedInUser] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState(false);
 
   const logout = () => {
     removeToken();
@@ -30,11 +30,14 @@ export default function Main() {
   }
 
   return (
-    <ThumbnailList>
-      {movies?.results.map((movie) => (
-        <Thumbnail key={movie.id} movie={movie} />
-      ))}
-    </ThumbnailList>
+    <>
+      <ThumbnailList>
+        {movies?.results.map((movie) => (
+          <Thumbnail key={movie.id} movie={movie} setSelectedMovieId={setSelectedMovieId} />
+        ))}
+      </ThumbnailList>
+      {selectedMovieId && <Card movieId={selectedMovieId} setSelectedMovieId={setSelectedMovieId}/>}
+    </>
   );
 }
 

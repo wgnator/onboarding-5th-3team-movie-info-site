@@ -1,15 +1,12 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import theme from "../theme";
 import { useMovieModel } from "../models/useMovieModel";
-import { useNavigate } from "react-router-dom";
 import CloseIcon from "../images/icons/close-icon.png";
 import PlusIcon from "../images/icons/plus-icon.png";
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
 
-export default function Card({ movieId }) {
-  const navigate = useNavigate();
+export default function Card({ movieId, setSelectedMovieId }) {
   const { movie, getMovieById } = useMovieModel();
 
   useEffect(() => {
@@ -20,7 +17,7 @@ export default function Card({ movieId }) {
     <Modal>
       <Image src={`${IMAGE_BASE_URL}${movie?.backdrop_path}`} alt="movie image" />
       <MovieInfo>
-        <PlusButton src={PlusIcon} />
+        <PlusButton src={PlusIcon} onClick={() => {}} />
         <H1>{movie?.original_title}</H1>
         <H2>{movie?.tagline}</H2>
         <Tag>{movie?.status === "Released" ? new Date(movie?.release_date).getFullYear() : "unreleased"}</Tag>
@@ -32,7 +29,7 @@ export default function Card({ movieId }) {
         <p>Production Countries : {movie?.production_countries.map((country) => country.name).join(", ")}</p>
         <p>Production Company : {movie?.production_companies.map((company) => company.name).join(", ")}</p>
       </MovieInfo>
-      <CloseButton src={CloseIcon} onClick={() => navigate("/")} />
+      <CloseButton src={CloseIcon} onClick={() => setSelectedMovieId(null)} />
     </Modal>
   );
 }

@@ -1,14 +1,11 @@
-import React from 'react';
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import styled from "styled-components";
 
-export default function Thumbnail({ movie }) {
-  const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/original';
-
-  const navigate = useNavigate();
+export default function Thumbnail({ movie, setSelectedMovieId }) {
+  const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
 
   const handleThumbnailClick = (movieId) => {
-    navigate(`/detail/${movieId}`);
+    setSelectedMovieId(movieId);
   };
 
   return (
