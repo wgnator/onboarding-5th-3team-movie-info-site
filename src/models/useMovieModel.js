@@ -17,7 +17,7 @@ export const useMovieModel = () => {
   };
 
   const getMovieById = async (id) => {
-    movieDataService.get(`/movie/${id}`, {}, getMovieByIdCallback);
+    movieDataService.get(`/${id}`, getMovieByIdCallback);
   };
 
   const searchMovies = (keyword = null) => {
