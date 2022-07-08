@@ -10,7 +10,8 @@ export default function Router() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Main />}>
-          <Route path=":movieId" element={<Card />} />
+          <Route path=":movieTitle" element={<Main />} />
+          <Route path="/detail/:movieId" element={<Card />} />
           <Route path="/favorites" element={<Main favorites={true} />} />
         </Route>
         <Route path="/login" element={<Login />} />
