@@ -5,15 +5,6 @@ import AccessUserDB from "./models/AccessUserDB";
 
 
 function App() {
-  const [data, setData] = useState();
-  useEffect(() => {
-    getData();
-  }, []);
-
-  async function getData() {
-    const data = await AccessUserDB.getUsers();
-    setData(data);
-  }
   return <Router />;
 
 }
