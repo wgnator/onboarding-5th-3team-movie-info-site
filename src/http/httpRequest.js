@@ -2,11 +2,13 @@ export class HttpRequest {
   constructor(service) {
     this.service = service;
   }
-  get(url, callback) {
+  async get(url, callback) {
     let response;
-    this.service.get(url).then((_response) => {
+    await this.service.get(url).then((_response) => {
       if (callback) callback(_response);
-      else response = _response;
+      else {
+        response = _response;
+      }
     });
     return response;
   }

@@ -1,5 +1,3 @@
-
-
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
@@ -53,7 +51,7 @@ const Container = styled.div`
   flex-direction: column;
   background-color: red;
 `;
-const Contents = styled.div`
+export const Contents = styled.div`
   overflow-y: scroll;
   padding: 0 2rem;
   gap: 2rem;
