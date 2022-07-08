@@ -1,9 +1,8 @@
-import React from "react";
-import styled from "styled-components";
-
+import React from 'react';
+import styled from 'styled-components';
 
 export default function Thumbnail({ movie, setCard }) {
-  const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
+  const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/original';
 
   const handleThumbnailClick = (movieId) => {
     setCard(movieId);
@@ -37,10 +36,14 @@ const ThumbnailContainer = styled.li`
 `;
 
 const Title = styled.h1`
-  font-size: 2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 1.5rem;
+  text-overflow: ellipsis;
 `;
 
 const Poster = styled.img`
   width: 100%;
   height: 100%;
+  object-fit: cover;
 `;

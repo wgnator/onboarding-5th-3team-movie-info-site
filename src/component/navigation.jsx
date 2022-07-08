@@ -1,53 +1,68 @@
 
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import styled from 'styled-components'
 import {ReactComponent as SearchIco} from '../images/icons/search-svgrepo-com.svg'
 import {ReactComponent as LogoIco} from '../images/icons/netflix-svgrepo-com.svg'
 import { useRef } from 'react';
 import { useMovieModel } from '../models/useMovieModel';
 import LoginButton from './LoginButton';
-
+import { useNavigate } from 'react-router';
 
 export default function Navigation({selectedTap,setSelectedTap}){
+  const searchRef = useRef();
+  const searchBoxRef = useRef();
   const { getMovies, movies } = useMovieModel(); 
   const [relatedSearch,setRelatedSearch] = useState();
-  const [isLoading,setIsLoading] = useState(true);
   const [searchReady,setSearchReady] = useState(false);
   const [searchShow,setSearchShow] = useState(false);
-  const searchRef = useRef();
   const [recentSearches , setRecentSearches] = useState([]);
-  const resultTitles = []
-  // const {moviesTitle,setMoviesTitle} = useState([]);
-  const [isLogin,setIsLogin] = useState(false);
-  React.useEffect(()=>{
+  const navigation = useNavigate();
+  useEffect(()=>{
     getMovies()
-      // setMoviesTitle(title !== undefined && title);
   },[])
-  React.useEffect(()=>{
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        searchBoxRef.current &&
+        !searchBoxRef.current.contains(event.target)
+      ) {
+        setSearchShow(false); 
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    
+  }, [searchBoxRef]);
+  useEffect(()=>{
     if(movies){
-      setIsLoading(false);
-      getRecentSearch();
+      getRecentlySearch();
     }
   },[movies])
 
-  const  getMovieTitle = (searchRef) => {
-    
-    const result = movies?.results.filter(data=>{
-      return data.original_title.toLowerCase().includes(searchRef.toLowerCase())
+  const  getSearchMovieTitle = (searchInput) => {
+    console.log("length",searchInput.length-1);
+    const result = movies?.results.filter(movie=>{
+      return movie.original_title.toLowerCase().slice(0, searchInput.length).includes(searchInput.toLowerCase())
     })
     setRelatedSearch(result)
   }
 
   const moveToSearchPath = (event) => {
     event.preventDefault()
-    saveRecentSearch(searchRef.current.value)
+    saveRecentlySearch(searchRef.current.value)
+    navigation(`/search/${searchRef.current.value}`)
     searchRef.current.value = '';
   }
-  const getRecentSearch = () => {
+  const moveToSearchBoxPath = (event) => {
+    const searchClick = event.target.innerText;
+    // console.log("클릭",event.target.innerText);
+    navigation(`/search/${searchClick}`)
+  }
+  const getRecentlySearch = () => {
     const getRecent = localStorage.getItem('searchRecent');
     setRecentSearches(getRecent !== null && getRecent.split(','))
   }
-  const saveRecentSearch = (string) => {
+  const saveRecentlySearch = (string) => {
     const getRecent = localStorage.getItem('searchRecent');
     const recentArr = `${getRecent === null ? string : string + "," + getRecent}` ;
     localStorage.removeItem('searchRecent');
@@ -62,14 +77,7 @@ export default function Navigation({selectedTap,setSelectedTap}){
       return
     }
     setSearchReady(true)
-    getMovieTitle(searchInput);
-  }
-  console.log(searchReady);
-  console.log(relatedSearch);
-  if(searchReady){
-    relatedSearch.map((data)=>{
-    console.log(data.original_title);
-  })
+    getSearchMovieTitle(searchInput);
   }
   return (
     <Container>
@@ -78,36 +86,30 @@ export default function Navigation({selectedTap,setSelectedTap}){
             <LogoIco />
             <span>Movie</span>
           </LogoWrap>
-          <SearchWrap show={searchShow}>
+          <SearchWrap show={searchShow} ref={searchBoxRef}>
               <form onSubmit={(event) => moveToSearchPath(event)}>
                 <SearchIco/>
-                <input ref={searchRef} placeholder='보고싶은 영화 ?' onChange={searchOnChange} onFocus={()=>setSearchShow(true)} onBlur={()=>setSearchShow(false)}/>
+                <input ref={searchRef} placeholder='보고싶은 영화 ?' onChange={searchOnChange} onFocus={()=>setSearchShow(true)} />
               </form>
               <SearchBox show={searchShow}>
                 <RecentWrap show={searchShow}>
-                  <SearchOption show={searchShow}>{searchReady ? "Related Searchs" : "Recent Searches"}</SearchOption>
+                  <SearchOption show={searchShow}>{searchReady ? "추천 검색어" : "최근 검색어"}</SearchOption>
                     {
                       searchReady ? 
                         relatedSearch.map((item,index)=>(
-                          <SearchItem show={searchShow} key={index}>{item.original_title}</SearchItem>
+                          <SearchItem show={searchShow} onClick={(event) => moveToSearchBoxPath(event)}  key={index}>{item.original_title}</SearchItem>
                         ))
                       : recentSearches.length > 0 && 
                       recentSearches?.map((item,index)=>(
                       index > 4 ? 
                       null : 
-                      <SearchItem show={searchShow} key={index}>{item}</SearchItem>
+                      <SearchItem onClick={(event) => moveToSearchBoxPath(event)} show={searchShow} key={index}>
+                        {item}
+                      </SearchItem>
                     ))}
                 </RecentWrap> 
               </SearchBox>
         </SearchWrap>
-        <FavoriteWrap onClick={()=>{localStorage.clear()}}>
-          {isLogin ? 
-          <div>
-            <button>login</button>
-            <button>Sign Up</button>
-          </div> :
-          <div>즐겨찾기</div>}
-        </FavoriteWrap>
         <LoginButton
           selectedTap={selectedTap}
           setSelectedTap={setSelectedTap}
@@ -216,9 +218,9 @@ const RecentWrap = styled.div`
   padding-bottom: 0px;
   overflow: hidden;
   color: black;
-  transition: all 1s ease;
+  background-color: white;
+  /* transition: all 1s ease; */
   ${(props) => props.show && `
-    transform: scale(1);
     padding-bottom: 5px;
   `}
 `;
@@ -229,25 +231,31 @@ const SearchOption = styled.div`
   font-size: 0px;
   font-weight: bold;
   transition: all 2s ease;
+  background-color: white;
   ${(props) => props.show && `
     display:block;
     font-size: 16px;
   `}
 `;
 const SearchItem = styled.div`
+  background-color: white;
   display: none;
   animation: fadeInText 3s 2s ease-out forwards;
   padding: 5px;
   margin: 5px 5px 0 5px;
   font-size: 16px;
   border-radius: 5px;
-  transition: all 3s ease;
-  border: 1px solid black;
+  transition: all 1s ease;
+  cursor: pointer;
+  /* border: 1px solid black; */
   ${(props) => props.show && `
     display:block;
     border: 1px solid black
     font-size: 16px;
   `}
+  :hover{
+    background-color: rgb(0,0,0,0.3);
+  }
 `;
 const FavoriteWrap = styled.div`
   margin-left: 15px;
