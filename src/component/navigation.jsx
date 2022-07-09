@@ -257,8 +257,3 @@ const SearchItem = styled.div`
     background-color: rgb(0,0,0,0.3);
   }
 `;
-const FavoriteWrap = styled.div`
-  margin-left: 15px;
-  font-size: 18px;
-  
-`;
