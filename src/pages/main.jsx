@@ -5,15 +5,19 @@ import { useMovieModel } from "../models/useMovieModel";
 import Navigation from "../component/navigation";
 import Thumbnail from "../component/thumbnail";
 import { useState } from "react";
-import Card from "../component/card";
+import Card from "../component/Card";
 import { FAVORITES_TAP, SEARCH_TAP } from "../const/consts";
 import Favorites from "../component/favorites";
+import { getLoggedInUser, saveToken } from "../utils/library";
+import AccessUserDB from "../models/AccessUserDB";
 
 export default function Main() {
   const { movies, getMovies, searchMovies } = useMovieModel();
   const [selectedTap, setSelectedTap] = useState(SEARCH_TAP);
   const { movieTitle } = useParams();
   const [card, setCard] = useState(false);
+  const loggedInUser = getLoggedInUser();
+  const { id, favorites } = loggedInUser;
 
   useEffect(() => {
     if (movieTitle) {
@@ -25,6 +29,17 @@ export default function Main() {
     getMovies();
   }, []);
 
+  const updateFavorite = (movieId) => {
+    if (favorites.includes(movieId)) {
+      const index = favorites.indexOf(movieId);
+      favorites.splice(index, 1);
+    } else {
+      favorites.push(movieId);
+    }
+    AccessUserDB.updateUser(`users/${id}`, { favorites: favorites });
+    saveToken({ ...loggedInUser, favorites: favorites });
+  };
+
   return (
     <Container>
       <Navigation selectedTap={selectedTap} setSelectedTap={setSelectedTap} />
@@ -32,11 +47,8 @@ export default function Main() {
         {selectedTap === SEARCH_TAP && (
           <>
             {!movies && <p>영화 목록이 없습니다</p>}
-            {movies &&
-              movies.results?.map((movie) => (
-                <Thumbnail key={movie.id} movie={movie} setCard={setCard} />
-              ))}
-            {card && <Card movieId={card} closeAction={() => setCard(false)} />}
+            {movies && movies.results?.map((movie) => <Thumbnail key={movie.id} movie={movie} setCard={setCard} />)}
+            {card && <Card movieId={card} closeAction={() => setCard(false)} toggleFavorite={updateFavorite} />}
           </>
         )}
         {selectedTap === FAVORITES_TAP && <Favorites />}
