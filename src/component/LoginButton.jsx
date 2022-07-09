@@ -13,8 +13,8 @@ export default function LoginButton({ selectedTap, setSelectedTap }) {
     setLoggedInUser(false);
   };
 
-  const selctFavoriteTap = () => setSelectedTap(FAVORITES_TAP);
-  const selctSearchTap = () => setSelectedTap(SEARCH_TAP);
+  const selectFavoriteTap = () => setSelectedTap(FAVORITES_TAP);
+  const selectSearchTap = () => setSelectedTap(SEARCH_TAP);
 
   useEffect(() => {
     setLoggedInUser(getLoggedInUser());
@@ -24,17 +24,10 @@ export default function LoginButton({ selectedTap, setSelectedTap }) {
     <Container>
       {loggedInUser && (
         <>
-          <Button
-            hasShow={selectedTap === FAVORITES_TAP}
-            onClick={selctSearchTap}
-          >
+          <Button hasShow={selectedTap === FAVORITES_TAP} onClick={selectSearchTap}>
             검색
           </Button>
-          <Button
-            hasShow
-            isActivate={selectedTap === FAVORITES_TAP}
-            onClick={selctFavoriteTap}
-          >
+          <Button hasShow isActivate={selectedTap === FAVORITES_TAP} onClick={selectFavoriteTap}>
             즐겨찾기
           </Button>
           <Button hasShow onClick={logout}>
