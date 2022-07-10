@@ -1,47 +1,23 @@
-
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
 import { useMovieModel } from "../models/useMovieModel";
-import Navigation from "../component/navigation";
-import Thumbnail from "../component/thumbnail";
+import Navigation from "../component/Navigation";
+import Contents from "../component/Contents";
+import { useEffect } from "react";
 import { useState } from "react";
-import Card from "../component/card";
-import { FAVORITES_TAP, SEARCH_TAP } from "../const/consts";
-import Favorites from "../component/favorites";
 
 export default function Main() {
-  const { movies, getMovies, searchMovies } = useMovieModel();
-  const [selectedTap, setSelectedTap] = useState(SEARCH_TAP);
-  const { movieTitle } = useParams();
-  const [card, setCard] = useState(false);
+  const { movies, getMovies, getMoviesByIds, searchMovies } = useMovieModel();
+  const [moviesToShow, setMoviesToShow] = useState();
 
   useEffect(() => {
-    if (movieTitle) {
-      searchMovies(movieTitle);
-    }
-  }, [movieTitle]);
-
-  useEffect(() => {
-    getMovies();
-  }, []);
+    setMoviesToShow(movies);
+  }, [movies]);
 
   return (
-    <Container>
-      <Navigation selectedTap={selectedTap} setSelectedTap={setSelectedTap} />
-      <Contents>
-        {selectedTap === SEARCH_TAP && (
-          <>
-            {!movies && <p>영화 목록이 없습니다</p>}
-            {movies &&
-              movies.results?.map((movie) => (
-                <Thumbnail key={movie.id} movie={movie} setCard={setCard} />
-              ))}
-            {card && <Card movieId={card} closeAction={() => setCard(false)} />}
-          </>
-        )}
-        {selectedTap === FAVORITES_TAP && <Favorites />}
-      </Contents>
+    <Container className="Container">
+      <Navigation movies={movies} getMovies={getMovies} getMoviesByIds={getMoviesByIds} searchMovies={searchMovies} />
+      <Contents moviesToShow={moviesToShow} />
     </Container>
   );
 }
@@ -51,16 +27,4 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   background-color: red;
-`;
-const Contents = styled.div`
-  overflow-y: scroll;
-  padding: 0 2rem;
-  gap: 2rem;
-  height: 100%;
-  padding-top: 80px;
-  padding-bottom: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
 `;

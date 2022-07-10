@@ -2,51 +2,48 @@ import { useState } from "react";
 import { movieDataService } from "../services/movieDataService";
 
 export const useMovieModel = () => {
-  const [movies, setMovies] = useState(null);
+  const [movies, setMovies] = useState();
   const [movie, setMovie] = useState(null);
-  const [favoriteMovies, setFavoriteMovies] = useState(null);
 
   const getMoviesCallback = (response) => {
-    setMovies(response.data);
+    setMovies(response.data?.results);
+    return response;
   };
   const getMovieByIdCallback = (response) => {
     setMovie(response.data);
+    return response;
   };
 
-  const getMovies = (pageNo) => {
-    movieDataService.get(
-      `/movie/popular${pageNo ? "?page=" + pageNo : ""}`,
-      getMoviesCallback
-    );
+  const getMovies = async (pageNo) => {
+    return await movieDataService.get(`/movie/popular${pageNo ? "?page=" + pageNo : ""}`, getMoviesCallback);
   };
 
   const getMovieById = async (id) => {
     movieDataService.get(`/movie/${id}`, getMovieByIdCallback);
   };
 
-  // 작동안됨
-  const getFavoriteMoviesById = async (ids) => {
-    console.log("ids", ids);
-    const results = await Promise.all(
-      ids.map(async (id) => movieDataService.get(`/movie/${id}`))
+  const getMoviesByIds = async (ids) => {
+    const promises = ids.map(
+      (id) =>
+        new Promise(async (resolve, reject) => {
+          const result = await movieDataService.get(`/movie/${id}`);
+          resolve(result.data);
+        })
     );
-    setFavoriteMovies(results);
+    Promise.all(promises).then((results) => {
+      setMovies(results);
+    });
   };
-
   const searchMovies = (keyword = null) => {
     if (keyword === null) return;
-    movieDataService.get(
-      `/search/movie${keyword ? "?query=" + keyword : ""}`,
-      getMoviesCallback
-    );
+    movieDataService.get(`/search/movie${keyword ? "?query=" + keyword : ""}`, getMoviesCallback);
   };
   return {
     movie,
     movies,
     getMovies,
     getMovieById,
+    getMoviesByIds,
     searchMovies,
-    getFavoriteMoviesById,
-    favoriteMovies,
   };
 };
