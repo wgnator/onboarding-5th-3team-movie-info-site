@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { theme } from "../theme";
-import { getLoggedInUser, removeToken } from "../utils/library";
+import { getLoggedInUser, removeToken } from "../utils/useAccount";
 
 export default function NavigationButtons() {
   const [loggedInUser, setLoggedInUser] = useState(false);

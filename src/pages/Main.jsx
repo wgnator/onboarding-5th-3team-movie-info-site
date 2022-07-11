@@ -10,7 +10,7 @@ import AccessUserDB from "../models/AccessUserDB";
 import { getLoggedInUser, saveToken } from "../utils/useAccount";
 
 export default function Main() {
-  const { movies, getMovies, getMoviesByIds, searchMovies } = useMovieModel();
+  const { movies, getMovies, searchMovies } = useMovieModel();
   const { movieTitle } = useParams();
   const [card, setCard] = useState(false);
   const loggedInUser = getLoggedInUser();
@@ -40,7 +40,7 @@ export default function Main() {
 
   return (
     <Container className="Container">
-      <Navigation movies={movies} getMovies={getMovies} getMoviesByIds={getMoviesByIds} searchMovies={searchMovies} />
+      <Navigation movies={movies} />
       <Contents className="Contents">
         {movies ? (
           movies.results?.map((movie) => (
