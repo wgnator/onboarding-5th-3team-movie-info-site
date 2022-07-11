@@ -2,15 +2,33 @@ import React from "react";
 import { getLoggedInUser } from "../utils/library";
 import { useMovieModel } from "../models/useMovieModel";
 import { useEffect } from "react";
-export default function Favorites() {
-  const { getFavoriteMoviesById, favoriteMovies } = useMovieModel();
-  const loggenInUser = getLoggedInUser();
+import { Contents } from "../pages/main";
+import Thumbnail from "../component/thumbnail";
+import styled from "styled-components";
 
-  const { favorites, likes } = loggenInUser;
+export default function Favorites() {
+  const loggedInUser = getLoggedInUser();
+  const { movies, getMoviesByIds } = useMovieModel();
+  const { favorites } = loggedInUser;
 
   useEffect(() => {
-    getFavoriteMoviesById(favorites);
+    getMoviesByIds(favorites);
   }, []);
-  console.log("favoriteMovies", favoriteMovies);
-  return <div>favorites</div>;
+
+  // 할일: 컴포넌트 메인에서 재사용하기
+  return (
+    <Container className="favorites">
+      {movies?.length > 0 &&
+        movies?.map((movie) => (
+          <>
+            <Thumbnail key={movie.id} movie={movie} />
+          </>
+        ))}
+    </Container>
+  );
 }
+
+const Container = styled.div`
+  width: 100%;
+  display: flex;
+`;
