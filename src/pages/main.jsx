@@ -6,14 +6,10 @@ import Navigation from "../component/Navigation";
 import Thumbnail from "../component/Thumbnail";
 import { useState } from "react";
 import Card from "../component/Card";
-<<<<<<< HEAD
-import { FAVORITES_TAP, SEARCH_TAP } from "../const/consts";
-import Favorites from "../component/Favorites";
-=======
 import Favorites from "../component/Favorites";
 import { getLoggedInUser, saveToken } from "../utils/library";
 import AccessUserDB from "../models/AccessUserDB";
->>>>>>> master
+
 
 export default function Main() {
   const { movies, getMovies, searchMovies } = useMovieModel();

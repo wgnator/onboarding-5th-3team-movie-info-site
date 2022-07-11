@@ -4,11 +4,6 @@ import { theme } from "./theme";
 import { GlobalStyle } from "./GlobalStyle";
 
 function App() {
-<<<<<<< HEAD
-  return <Router />;
-
-=======
-
   return(
     <ThemeProvider theme={theme}>
       <GlobalStyle />
@@ -16,6 +11,5 @@ function App() {
     </ThemeProvider>
   )
   ;
->>>>>>> master
-}
+  }
 export default App;

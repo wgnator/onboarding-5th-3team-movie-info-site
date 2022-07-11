@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { FAVORITES_TAP, SEARCH_TAP } from "../const/consts";
 import { theme } from "../theme";
 import { getLoggedInUser, removeToken } from "../utils/library";
 
