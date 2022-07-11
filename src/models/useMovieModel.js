@@ -4,7 +4,6 @@ import { movieDataService } from "../services/movieDataService";
 export const useMovieModel = () => {
   const [movies, setMovies] = useState(null);
   const [movie, setMovie] = useState(null);
-  const [favoriteMovies, setFavoriteMovies] = useState(null);
 
   const getMoviesCallback = (response) => {
     setMovies(response.data);
@@ -24,15 +23,6 @@ export const useMovieModel = () => {
     movieDataService.get(`/movie/${id}`, getMovieByIdCallback);
   };
 
-  // 작동안됨
-  const getFavoriteMoviesById = async (ids) => {
-    console.log("ids", ids);
-    const results = await Promise.all(
-      ids.map(async (id) => movieDataService.get(`/movie/${id}`))
-    );
-    setFavoriteMovies(results);
-  };
-
   const searchMovies = (keyword = null) => {
     if (keyword === null) return;
     movieDataService.get(
@@ -46,7 +36,5 @@ export const useMovieModel = () => {
     getMovies,
     getMovieById,
     searchMovies,
-    getFavoriteMoviesById,
-    favoriteMovies,
   };
 };
