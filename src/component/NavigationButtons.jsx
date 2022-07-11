@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { FAVORITES_TAP, SEARCH_TAP } from "../const/consts";
 import { theme } from "../theme";
 import { getLoggedInUser, removeToken } from "../utils/library";
 
-export default function LoginButton({ selectedTap, setSelectedTap }) {
+export default function NavigationButtons() {
   const [loggedInUser, setLoggedInUser] = useState(false);
 
   const logout = () => {
     removeToken();
     setLoggedInUser(false);
   };
-
-  const selectFavoriteTap = () => setSelectedTap(FAVORITES_TAP);
-  const selectSearchTap = () => setSelectedTap(SEARCH_TAP);
 
   useEffect(() => {
     setLoggedInUser(getLoggedInUser());
@@ -24,10 +20,12 @@ export default function LoginButton({ selectedTap, setSelectedTap }) {
     <Container>
       {loggedInUser && (
         <>
-          <Button hasShow={selectedTap === FAVORITES_TAP} onClick={selectSearchTap}>
+          <Button
+          >
             검색
           </Button>
-          <Button hasShow isActivate={selectedTap === FAVORITES_TAP} onClick={selectFavoriteTap}>
+          <Button
+          >
             즐겨찾기
           </Button>
           <Button hasShow onClick={logout}>

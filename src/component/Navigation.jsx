@@ -3,23 +3,21 @@ import styled from "styled-components";
 import { ReactComponent as SearchIco } from "../images/icons/search-svgrepo-com.svg";
 import { ReactComponent as LogoIco } from "../images/icons/netflix-svgrepo-com.svg";
 import { useRef } from "react";
-import { useMovieModel } from "../models/useMovieModel";
-import LoginButton from "./LoginButton";
+import NavigationButtons from "./NavigationButtons";
 import { useNavigate } from "react-router";
-import { Link } from "react-router-dom";
 
-export default function Navigation({ selectedTap, setSelectedTap }) {
+export default function Navigation({ movies }) {
   const searchRef = useRef();
   const searchBoxRef = useRef();
-  const { getMovies, movies } = useMovieModel();
+  // const { getMovies, movies } = useMovieModel();
   const [relatedSearch, setRelatedSearch] = useState();
   const [searchReady, setSearchReady] = useState(false);
   const [searchShow, setSearchShow] = useState(false);
   const [recentSearches, setRecentSearches] = useState([]);
   const navigation = useNavigate();
-  useEffect(() => {
-    getMovies();
-  }, []);
+  // useEffect(() => {
+  //   getMovies();
+  // }, []);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -29,6 +27,7 @@ export default function Navigation({ selectedTap, setSelectedTap }) {
     }
     document.addEventListener("mousedown", handleClickOutside);
   }, [searchBoxRef]);
+  
   useEffect(() => {
     if (movies) {
       getRecentlySearch();
@@ -58,6 +57,7 @@ export default function Navigation({ selectedTap, setSelectedTap }) {
     const getRecent = localStorage.getItem("searchRecent");
     setRecentSearches(getRecent !== null && getRecent.split(","));
   };
+
   const saveRecentlySearch = (string) => {
     const getRecent = localStorage.getItem("searchRecent");
     const recentArr = `${getRecent === null ? string : string + "," + getRecent}`;
@@ -78,7 +78,7 @@ export default function Navigation({ selectedTap, setSelectedTap }) {
   return (
     <Container>
       <Wrap>
-        <LogoWrap>
+        <LogoWrap onClick={()=>{navigation("/"); }>
           <LogoIco />
           <span>Movie</span>
         </LogoWrap>
@@ -107,7 +107,7 @@ export default function Navigation({ selectedTap, setSelectedTap }) {
             </RecentWrap>
           </SearchBox>
         </SearchWrap>
-        <LoginButton selectedTap={selectedTap} setSelectedTap={setSelectedTap} />
+        <NavigationButtons />
       </Wrap>
     </Container>
   );
@@ -258,8 +258,4 @@ const SearchItem = styled.div`
   :hover {
     background-color: rgb(0, 0, 0, 0.3);
   }
-`;
-const FavoriteWrap = styled.div`
-  margin-left: 15px;
-  font-size: 18px;
 `;
