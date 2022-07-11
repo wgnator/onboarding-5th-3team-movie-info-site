@@ -3,22 +3,21 @@ import styled from "styled-components";
 import { ReactComponent as SearchIco } from "../images/icons/search-svgrepo-com.svg";
 import { ReactComponent as LogoIco } from "../images/icons/netflix-svgrepo-com.svg";
 import { useRef } from "react";
-import { useMovieModel } from "../models/useMovieModel";
-import LoginButton from "./LoginButton";
+import NavigationButtons from "./NavigationButtons";
 import { useNavigate } from "react-router";
 
-export default function Navigation({ selectedTap, setSelectedTap }) {
+export default function Navigation({ movies }) {
   const searchRef = useRef();
   const searchBoxRef = useRef();
-  const { getMovies, movies } = useMovieModel();
+  // const { getMovies, movies } = useMovieModel();
   const [relatedSearch, setRelatedSearch] = useState();
   const [searchReady, setSearchReady] = useState(false);
   const [searchShow, setSearchShow] = useState(false);
   const [recentSearches, setRecentSearches] = useState([]);
   const navigation = useNavigate();
-  useEffect(() => {
-    getMovies();
-  }, []);
+  // useEffect(() => {
+  //   getMovies();
+  // }, []);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -34,6 +33,7 @@ export default function Navigation({ selectedTap, setSelectedTap }) {
       getRecentlySearch();
     }
   }, [movies]);
+
   const getSearchMovieTitle = (searchInput) => {
     console.log("length", searchInput.length - 1);
     const result = movies?.results.filter((movie) => {
@@ -107,7 +107,7 @@ export default function Navigation({ selectedTap, setSelectedTap }) {
             </RecentWrap>
           </SearchBox>
         </SearchWrap>
-        <LoginButton selectedTap={selectedTap} setSelectedTap={setSelectedTap} />
+        <NavigationButtons />
       </Wrap>
     </Container>
   );
