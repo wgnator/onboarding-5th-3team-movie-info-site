@@ -6,7 +6,8 @@ import PlusIcon from "../images/icons/plus-icon.png";
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
 
-export default function Card({ movieId, setSelectedMovieId, closeAction }) {
+
+export default function Card({ movieId, closeAction, toggleFavorite }) {
   const { movie, getMovieById } = useMovieModel();
 
   useEffect(() => {
@@ -15,12 +16,11 @@ export default function Card({ movieId, setSelectedMovieId, closeAction }) {
 
   const closeCard = () => closeAction();
 
-  console.log("card", movieId, movie);
   return (
     <Modal>
       <Image src={`${IMAGE_BASE_URL}${movie?.backdrop_path}`} alt="movie image" />
       <MovieInfo>
-        <PlusButton src={PlusIcon} onClick={() => {}} />
+        <PlusButton src={PlusIcon} onClick={() => toggleFavorite(movieId)} />
         <H1>{movie?.original_title}</H1>
         <H2>{movie?.tagline}</H2>
         <Tag>{movie?.status === "Released" ? new Date(movie?.release_date).getFullYear() : "unreleased"}</Tag>
@@ -46,6 +46,7 @@ const Modal = styled.div`
   max-width: 700px;
   background-color: black;
   color: white;
+  z-index: 10;
 `;
 
 const Image = styled.img`
@@ -87,6 +88,7 @@ const CloseButton = styled.img`
   position: absolute;
   top: 5px;
   right: 5px;
+  background: transparent;
   cursor: pointer;
   z-index: 20;
 `;
