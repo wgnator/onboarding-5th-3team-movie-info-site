@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { FAVORITES_TAP, SEARCH_TAP } from "../const/consts";
 import { theme } from "../theme";
-import { getLoggedInUser, removeToken } from "../utils/library";
+import { getLoggedInUser, removeToken } from "../utils/useAccount";
 
 export default function NavigationButtons() {
   const [loggedInUser, setLoggedInUser] = useState(false);
@@ -21,14 +20,8 @@ export default function NavigationButtons() {
     <Container>
       {loggedInUser && (
         <>
-          <Button
-          >
-            검색
-          </Button>
-          <Button
-          >
-            즐겨찾기
-          </Button>
+          <Button>검색</Button>
+          <Button>즐겨찾기</Button>
           <Button hasShow onClick={logout}>
             로그아웃
           </Button>
