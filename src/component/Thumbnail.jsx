@@ -1,8 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 export default function Thumbnail({ movie, setCard }) {
-  const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/original';
+  const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
 
   const handleThumbnailClick = (movieId) => {
     setCard(movieId);

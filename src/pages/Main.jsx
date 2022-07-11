@@ -2,20 +2,20 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { useMovieModel } from "../models/useMovieModel";
-import Navigation from "../component/navigation";
-import Thumbnail from "../component/thumbnail";
+import Navigation from "../component/Navigation";
+import Thumbnail from "../component/Thumbnail";
 import { useState } from "react";
-import Card from "../component/Card";
 import { FAVORITES_TAP, SEARCH_TAP } from "../const/consts";
-import Favorites from "../component/favorites";
+import Favorites from "../component/Favorites";
 import { getLoggedInUser, saveToken } from "../utils/library";
 import AccessUserDB from "../models/AccessUserDB";
+import Card from "../component/Card";
 
 export default function Main() {
   const { movies, getMovies, searchMovies } = useMovieModel();
   const [selectedTap, setSelectedTap] = useState(SEARCH_TAP);
   const { movieTitle } = useParams();
-  const [card, setCard] = useState(false);
+  const [hasCard, setHasCard] = useState(false);
   const loggedInUser = getLoggedInUser();
   const { id, favorites } = loggedInUser;
 
@@ -47,8 +47,17 @@ export default function Main() {
         {selectedTap === SEARCH_TAP && (
           <>
             {!movies && <p>영화 목록이 없습니다</p>}
-            {movies && movies.results?.map((movie) => <Thumbnail key={movie.id} movie={movie} setCard={setCard} />)}
-            {card && <Card movieId={card} closeAction={() => setCard(false)} toggleFavorite={updateFavorite} />}
+            {movies &&
+              movies.results?.map((movie) => (
+                <Thumbnail key={movie.id} movie={movie} setCard={setHasCard} />
+              ))}
+            {hasCard && (
+              <Card
+                movieId={hasCard}
+                closeAction={() => setHasCard(false)}
+                toggleFavorite={updateFavorite}
+              />
+            )}
           </>
         )}
         {selectedTap === FAVORITES_TAP && <Favorites />}

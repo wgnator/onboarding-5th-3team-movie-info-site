@@ -2,8 +2,7 @@ import React from "react";
 import { getLoggedInUser } from "../utils/library";
 import { useMovieModel } from "../models/useMovieModel";
 import { useEffect } from "react";
-import { Contents } from "../pages/main";
-import Thumbnail from "../component/thumbnail";
+import Thumbnail from "./Thumbnail";
 import styled from "styled-components";
 
 export default function Favorites() {
