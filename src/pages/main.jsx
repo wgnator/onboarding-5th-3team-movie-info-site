@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { useMovieModel } from "../models/useMovieModel";
-import Navigation from "../component/navigation";
-import Thumbnail from "../component/thumbnail";
+import Navigation from "../component/Navigation";
+import Thumbnail from "../component/Thumbnail";
 import { useState } from "react";
-import Card from "../component/card";
+import Card from "../component/Card";
 import { FAVORITES_TAP, SEARCH_TAP } from "../const/consts";
-import Favorites from "../component/favorites";
+import Favorites from "../component/Favorites";
 
 export default function Main() {
   const { movies, getMovies, searchMovies } = useMovieModel();

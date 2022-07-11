@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Main from "./pages/main";
-import Card from "./component/card";
+import Main from "./pages/Main";
+import Card from "./component/Card";
 import Login from "./pages/Login";
 import CreateAccount from "./pages/CreateAccount";
 import NotFound from "./pages/NotFound";
