@@ -21,13 +21,16 @@ export default function Navigation({ movies }) {
 
   useEffect(() => {
     function handleClickOutside(event) {
-      if (searchBoxRef.current && !searchBoxRef.current.contains(event.target)) {
+      if (
+        searchBoxRef.current &&
+        !searchBoxRef.current.contains(event.target)
+      ) {
         setSearchShow(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
   }, [searchBoxRef]);
-  
+
   useEffect(() => {
     if (movies) {
       getRecentlySearch();
@@ -37,7 +40,10 @@ export default function Navigation({ movies }) {
   const getSearchMovieTitle = (searchInput) => {
     console.log("length", searchInput.length - 1);
     const result = movies?.results.filter((movie) => {
-      return movie.original_title.toLowerCase().slice(0, searchInput.length).includes(searchInput.toLowerCase());
+      return movie.original_title
+        .toLowerCase()
+        .slice(0, searchInput.length)
+        .includes(searchInput.toLowerCase());
     });
     setRelatedSearch(result);
   };
@@ -60,7 +66,9 @@ export default function Navigation({ movies }) {
 
   const saveRecentlySearch = (string) => {
     const getRecent = localStorage.getItem("searchRecent");
-    const recentArr = `${getRecent === null ? string : string + "," + getRecent}`;
+    const recentArr = `${
+      getRecent === null ? string : string + "," + getRecent
+    }`;
     localStorage.removeItem("searchRecent");
     localStorage.setItem("searchRecent", recentArr);
     setRecentSearches(getRecent !== null && getRecent.split(","));
@@ -78,28 +86,43 @@ export default function Navigation({ movies }) {
   return (
     <Container>
       <Wrap>
-        <LogoWrap onClick={()=>{navigation("/"); }>
+        <LogoWrap onClick={() => navigation("/")}>
           <LogoIco />
           <span>Movie</span>
         </LogoWrap>
         <SearchWrap show={searchShow} ref={searchBoxRef}>
           <form onSubmit={(event) => moveToSearchPath(event)}>
             <SearchIco />
-            <input ref={searchRef} placeholder="보고싶은 영화 ?" onChange={searchOnChange} onFocus={() => setSearchShow(true)} />
+            <input
+              ref={searchRef}
+              placeholder="보고싶은 영화 ?"
+              onChange={searchOnChange}
+              onFocus={() => setSearchShow(true)}
+            />
           </form>
           <SearchBox show={searchShow}>
             <RecentWrap show={searchShow}>
-              <SearchOption show={searchShow}>{searchReady ? "추천 검색어" : "최근 검색어"}</SearchOption>
+              <SearchOption show={searchShow}>
+                {searchReady ? "추천 검색어" : "최근 검색어"}
+              </SearchOption>
               {searchReady
                 ? relatedSearch.map((item, index) => (
-                    <SearchItem show={searchShow} onClick={(event) => moveToSearchBoxPath(event)} key={index}>
+                    <SearchItem
+                      show={searchShow}
+                      onClick={(event) => moveToSearchBoxPath(event)}
+                      key={index}
+                    >
                       {item.original_title}
                     </SearchItem>
                   ))
                 : recentSearches.length > 0 &&
                   recentSearches?.map((item, index) =>
                     index > 4 ? null : (
-                      <SearchItem onClick={(event) => moveToSearchBoxPath(event)} show={searchShow} key={index}>
+                      <SearchItem
+                        onClick={(event) => moveToSearchBoxPath(event)}
+                        show={searchShow}
+                        key={index}
+                      >
                         {item}
                       </SearchItem>
                     )
@@ -166,7 +189,8 @@ const SearchWrap = styled.div`
     align-items: center;
     width: 18vw;
     background-color: white;
-    border-radius: ${(props) => (props.show ? "5px 5px 0 0" : "5px 5px 5px 5px")};
+    border-radius: ${(props) =>
+      props.show ? "5px 5px 0 0" : "5px 5px 5px 5px"};
     input {
       width: 100%;
       margin-left: 10px;
