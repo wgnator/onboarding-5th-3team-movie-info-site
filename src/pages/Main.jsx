@@ -6,10 +6,8 @@ import Navigation from "../component/Navigation";
 import Thumbnail from "../component/Thumbnail";
 import { useState } from "react";
 import Card from "../component/Card";
-import Favorites from "../component/Favorites";
-import { getLoggedInUser, saveToken } from "../utils/library";
 import AccessUserDB from "../models/AccessUserDB";
-
+import { getLoggedInUser, saveToken } from "../utils/useAccount";
 
 export default function Main() {
   const { movies, getMovies, searchMovies } = useMovieModel();
@@ -35,7 +33,9 @@ export default function Main() {
     } else {
       favorites.push(movieId);
     }
-    AccessUserDB.updateUser(`users/${loggedInUser.id}`, { favorites: favorites });
+    AccessUserDB.updateUser(`users/${loggedInUser.id}`, {
+      favorites: favorites,
+    });
     saveToken({ ...loggedInUser, favorites: favorites });
   };
 
@@ -43,12 +43,20 @@ export default function Main() {
     <Container className="Container">
       <Navigation movies={movies} />
       <Contents className="Contents">
-      {
-        movies ?  
-        movies.results?.map((movie) => <Thumbnail key={movie.id} movie={movie} setCard={setCard} />)
-        : (<p>영화 목록이 없습니다</p>)
-      }
-        {card && <Card movieId={card} closeAction={() => setCard(false)} toggleFavorite={updateFavorite} />}
+        {movies ? (
+          movies.results?.map((movie) => (
+            <Thumbnail key={movie.id} movie={movie} setCard={setCard} />
+          ))
+        ) : (
+          <p>영화 목록이 없습니다</p>
+        )}
+        {card && (
+          <Card
+            movieId={card}
+            closeAction={() => setCard(false)}
+            toggleFavorite={updateFavorite}
+          />
+        )}
       </Contents>
     </Container>
   );
