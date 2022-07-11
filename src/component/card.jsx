@@ -6,6 +6,7 @@ import PlusIcon from "../images/icons/plus-icon.png";
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
 
+
 export default function Card({ movieId, closeAction, toggleFavorite }) {
   const { movie, getMovieById } = useMovieModel();
 
@@ -89,4 +90,5 @@ const CloseButton = styled.img`
   right: 5px;
   background: transparent;
   cursor: pointer;
+  z-index: 20;
 `;
