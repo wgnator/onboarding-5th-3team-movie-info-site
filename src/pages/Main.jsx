@@ -15,7 +15,6 @@ export default function Main() {
   const [card, setCard] = useState(false);
   const loggedInUser = getLoggedInUser();
   const favorites = loggedInUser?.favorites;
-
   useEffect(() => {
     if (movieTitle) {
       searchMovies(movieTitle);
