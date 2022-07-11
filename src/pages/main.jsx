@@ -26,16 +26,13 @@ export default function Main() {
   }, []);
 
   return (
-    <Container>
+    <Container className="Container">
       <Navigation selectedTap={selectedTap} setSelectedTap={setSelectedTap} />
-      <Contents>
+      <Contents className="Contents">
         {selectedTap === SEARCH_TAP && (
           <>
             {!movies && <p>영화 목록이 없습니다</p>}
-            {movies &&
-              movies.results?.map((movie) => (
-                <Thumbnail key={movie.id} movie={movie} setCard={setCard} />
-              ))}
+            {movies && movies.results?.map((movie) => <Thumbnail key={movie.id} movie={movie} setCard={setCard} />)}
             {card && <Card movieId={card} closeAction={() => setCard(false)} />}
           </>
         )}
