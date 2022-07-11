@@ -2,22 +2,21 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { useMovieModel } from "../models/useMovieModel";
-import Navigation from "../component/navigation";
-import Thumbnail from "../component/thumbnail";
+import Navigation from "../component/Navigation";
+import Thumbnail from "../component/Thumbnail";
 import { useState } from "react";
 import Card from "../component/Card";
-import { FAVORITES_TAP, SEARCH_TAP } from "../const/consts";
-import Favorites from "../component/favorites";
+import Favorites from "../component/Favorites";
 import { getLoggedInUser, saveToken } from "../utils/library";
 import AccessUserDB from "../models/AccessUserDB";
 
+
 export default function Main() {
   const { movies, getMovies, searchMovies } = useMovieModel();
-  const [selectedTap, setSelectedTap] = useState(SEARCH_TAP);
   const { movieTitle } = useParams();
   const [card, setCard] = useState(false);
   const loggedInUser = getLoggedInUser();
-  const { id, favorites } = loggedInUser;
+  const favorites = loggedInUser?.favorites;
 
   useEffect(() => {
     if (movieTitle) {
@@ -36,22 +35,20 @@ export default function Main() {
     } else {
       favorites.push(movieId);
     }
-    AccessUserDB.updateUser(`users/${id}`, { favorites: favorites });
+    AccessUserDB.updateUser(`users/${loggedInUser.id}`, { favorites: favorites });
     saveToken({ ...loggedInUser, favorites: favorites });
   };
 
   return (
     <Container className="Container">
-      <Navigation selectedTap={selectedTap} setSelectedTap={setSelectedTap} />
+      <Navigation movies={movies} />
       <Contents className="Contents">
-        {selectedTap === SEARCH_TAP && (
-          <>
-            {!movies && <p>영화 목록이 없습니다</p>}
-            {movies && movies.results?.map((movie) => <Thumbnail key={movie.id} movie={movie} setCard={setCard} />)}
-            {card && <Card movieId={card} closeAction={() => setCard(false)} toggleFavorite={updateFavorite} />}
-          </>
-        )}
-        {selectedTap === FAVORITES_TAP && <Favorites />}
+      {
+        movies ?  
+        movies.results?.map((movie) => <Thumbnail key={movie.id} movie={movie} setCard={setCard} />)
+        : (<p>영화 목록이 없습니다</p>)
+      }
+        {card && <Card movieId={card} closeAction={() => setCard(false)} toggleFavorite={updateFavorite} />}
       </Contents>
     </Container>
   );

@@ -2,33 +2,39 @@ import React from "react";
 import { getLoggedInUser } from "../utils/library";
 import { useMovieModel } from "../models/useMovieModel";
 import { useEffect } from "react";
-import { Contents } from "../pages/main";
-import Thumbnail from "../component/thumbnail";
-import styled from "styled-components";
+import { useState } from "react";
+import { Contents } from "../pages/Main";
+import Thumbnail from "./Thumbnail";
 
 export default function Favorites() {
-  const loggedInUser = getLoggedInUser();
-  const { movies, getMoviesByIds } = useMovieModel();
-  const { favorites } = loggedInUser;
+  const loggenInUser = getLoggedInUser();
+  const { getMovies, movies } = useMovieModel();
+  const [favoriteMovies, setFavoriteMovies] = useState([]);
 
   useEffect(() => {
-    getMoviesByIds(favorites);
+    getMovies();
   }, []);
+  const { favorites, likes } = loggenInUser;
+
+  // 할일: favorite 받아오는 걸 get요청으로 처리하기
+  useEffect(() => {
+    if (movies?.results) {
+      const findFavorites = [];
+      favorites?.forEach((favorite) => {
+        const movie = movies.results.find((movie) => movie.id === favorite.id);
+        if (movie) findFavorites.push(movie);
+      });
+      setFavoriteMovies(findFavorites);
+    }
+  }, [movies?.results]);
 
   // 할일: 컴포넌트 메인에서 재사용하기
   return (
-    <Container className="favorites">
-      {movies?.length > 0 &&
-        movies?.map((movie) => (
-          <>
-            <Thumbnail key={movie.id} movie={movie} />
-          </>
+    <Contents>
+      {favoriteMovies.length > 0 &&
+        favoriteMovies?.map((movie) => (
+          <Thumbnail key={movie.id} movie={movie} />
         ))}
-    </Container>
+    </Contents>
   );
 }
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-`;
