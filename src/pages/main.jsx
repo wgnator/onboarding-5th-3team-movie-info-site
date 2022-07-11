@@ -12,12 +12,11 @@ import AccessUserDB from "../models/AccessUserDB";
 
 
 export default function Main() {
-  const { movies, getMovies, searchMovies } = useMovieModel();
+  const { movies, getMovies, getMoviesByIds, searchMovies } = useMovieModel();
   const { movieTitle } = useParams();
   const [card, setCard] = useState(false);
   const loggedInUser = getLoggedInUser();
   const favorites = loggedInUser?.favorites;
-
   useEffect(() => {
     if (movieTitle) {
       searchMovies(movieTitle);
@@ -41,7 +40,7 @@ export default function Main() {
 
   return (
     <Container className="Container">
-      <Navigation movies={movies} />
+      <Navigation movies={movies} getMovies={getMovies} getMoviesByIds={getMoviesByIds} searchMovies={searchMovies} />
       <Contents className="Contents">
       {
         movies ?  
