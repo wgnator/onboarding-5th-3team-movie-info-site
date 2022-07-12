@@ -13,8 +13,8 @@ const Contents = ({ movies }) => {
 
   return (
     <Container>
-      {movies.results?.length ? (
-        movies.results.map((movie) => {
+      {movies?.length ? (
+        movies.map((movie) => {
           return (
             <Thumbnail
               key={movie.id}
