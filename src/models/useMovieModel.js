@@ -6,7 +6,7 @@ export const useMovieModel = () => {
   const [movie, setMovie] = useState(null);
 
   const getMoviesCallback = (response) => {
-    setMovies(response.data);
+    setMovies(response.data.results);
   };
   const getMovieByIdCallback = (response) => {
     setMovie(response.data);
@@ -17,7 +17,10 @@ export const useMovieModel = () => {
   };
 
   const getMovies = (pageNo) => {
-    movieDataService.get(`/movie/popular${pageNo ? "?page=" + pageNo : ""}`, getMoviesCallback);
+    movieDataService.get(
+      `/movie/popular${pageNo ? "?page=" + pageNo : ""}`,
+      getMoviesCallback
+    );
   };
 
   const getMovieById = async (id) => {
@@ -36,9 +39,13 @@ export const useMovieModel = () => {
       setMovies(results);
     });
   };
+
   const searchMovies = (keyword = null) => {
     if (keyword === null) return;
-    movieDataService.get(`/search/movie${keyword ? "?query=" + keyword : ""}`, getMoviesCallback);
+    movieDataService.get(
+      `/search/movie${keyword ? "?query=" + keyword : ""}`,
+      getMoviesCallback
+    );
   };
   return {
     movie,

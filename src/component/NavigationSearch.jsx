@@ -1,11 +1,11 @@
-import React,{useState,useEffect,useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { ReactComponent as SearchIco } from "../images/icons/search-svgrepo-com.svg";
 import { useNavigate } from "react-router";
 import { useMovieModel } from "../models/useMovieModel";
 
 export default function NavigationSearch() {
-  const {movies , getMovies} = useMovieModel();
+  const { movies, getMovies } = useMovieModel();
   const searchRef = useRef();
   const searchBoxRef = useRef();
   const [relatedSearch, setRelatedSearch] = useState();
@@ -14,42 +14,49 @@ export default function NavigationSearch() {
   const [recentSearches, setRecentSearches] = useState([]);
   const navigation = useNavigate();
 
-  useEffect(()=>{
+  useEffect(() => {
     getMovies();
   },[])
   useEffect(() => {
     function handleClickOutside(event) {
-      if (searchBoxRef.current && !searchBoxRef.current.contains(event.target)) {
+      if (
+        searchBoxRef.current &&
+        !searchBoxRef.current.contains(event.target)
+      ) {
         setSearchShow(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
   }, [searchBoxRef]);
+
   useEffect(() => {
     if (movies) {
       getRecentlySearch();
     }
   }, [movies]);
+
   const moveToSearchPath = (event) => {
     event.preventDefault();
     saveRecentlySearch(searchRef.current.value);
     navigation(`/search/${searchRef.current.value}`);
     searchRef.current.value = "";
   };
+
   const moveToSearchBoxPath = (event) => {
     const searchClick = event.target.innerText;
     navigation(`/search/${searchClick}`);
   };
 
-
   const getSearchMovieTitle = (searchInput) => {
-    const result = movies?.results.filter((movie) => {
-      return movie.original_title.toLowerCase().slice(0, searchInput.length).includes(searchInput.toLowerCase());
+    const result = movies?.filter((movie) => {
+      return movie.original_title
+        .toLowerCase()
+        .slice(0, searchInput.length)
+        .includes(searchInput.toLowerCase());
     });
     setRelatedSearch(result);
   };
 
-  
   const getRecentlySearch = () => {
     const getRecent = localStorage.getItem("searchRecent");
     setRecentSearches(getRecent !== null && getRecent.split(","));
@@ -57,7 +64,9 @@ export default function NavigationSearch() {
 
   const saveRecentlySearch = (string) => {
     const getRecent = localStorage.getItem("searchRecent");
-    const recentArr = `${getRecent === null ? string : string + "," + getRecent}`;
+    const recentArr = `${
+      getRecent === null ? string : string + "," + getRecent
+    }`;
     localStorage.removeItem("searchRecent");
     localStorage.setItem("searchRecent", recentArr);
     setRecentSearches(getRecent !== null && getRecent.split(","));
@@ -124,7 +133,8 @@ const SearchWrap = styled.div`
     width: 18vw;
     border: 1px solid #d2cbcbcc;
     background-color: white;
-    border-radius: ${(props) => (props.show ? "5px 5px 0 0" : "5px 5px 5px 5px")};
+    border-radius: ${(props) =>
+      props.show ? "5px 5px 0 0" : "5px 5px 5px 5px"};
     input {
       width: 100%;
       margin-left: 10px;
