@@ -17,7 +17,7 @@ export default function Card({ movieId, closeAction, favorite }) {
 
   useEffect(() => {
     getMovieById(movieId);
-  }, []);
+  }, [id]);
 
   const closeCard = () => closeAction();
 
@@ -106,9 +106,11 @@ const PlusButtonWrapper = styled.div`
     height: 50px;
   }
   cursor: pointer;
+  z-index: 100;
 `;
 
 const MovieInfo = styled.div`
+  position: relative;
   padding: 10px;
 `;
 
