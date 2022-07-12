@@ -37,10 +37,8 @@ export default function Main() {
     });
     saveToken({ ...loggedInUser, favorites: favorites });
   };
-
   return (
     <Container className="Container">
-      <Navigation movies={movies} getMovies={getMovies} getMoviesByIds={getMoviesByIds} searchMovies={searchMovies} />
       <Contents className="Contents">
         {movies ? (
           movies.results?.map((movie) => (

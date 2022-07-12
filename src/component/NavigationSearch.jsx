@@ -12,11 +12,11 @@ export default function NavigationSearch() {
   const [searchReady, setSearchReady] = useState(false);
   const [searchShow, setSearchShow] = useState(false);
   const [recentSearches, setRecentSearches] = useState([]);
+  const navigation = useNavigate();
 
   useEffect(()=>{
     getMovies();
   },[])
-  const navigation = useNavigate();
   useEffect(() => {
     function handleClickOutside(event) {
       if (searchBoxRef.current && !searchBoxRef.current.contains(event.target)) {
@@ -62,16 +62,26 @@ export default function NavigationSearch() {
     localStorage.setItem("searchRecent", recentArr);
     setRecentSearches(getRecent !== null && getRecent.split(","));
   };
-
-  const searchOnChange = () => {
+  
+  const searchOnChange = (e) => {
     const searchInput = searchRef.current.value;
     if (searchInput === "") {
       setSearchReady(false);
       return;
     }
     setSearchReady(true);
-    getSearchMovieTitle(searchInput);
+    processChanges(searchInput)
   };
+  const debounce = (callback,delay) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(()=> 
+        callback(...args)
+      ,delay)
+    }
+  }
+  const processChanges = debounce((value) => getSearchMovieTitle(value),270);
   return(
     
       <SearchWrap show={searchShow} ref={searchBoxRef}>
@@ -83,7 +93,7 @@ export default function NavigationSearch() {
             <RecentWrap show={searchShow}>
               <SearchOption show={searchShow}>{searchReady ? "추천 검색어" : "최근 검색어"}</SearchOption>
               {searchReady
-                ? relatedSearch.map((item, index) => (
+                ? relatedSearch?.map((item, index) => (
                     <SearchItem show={searchShow} onClick={(event) => moveToSearchBoxPath(event)} key={index}>
                       {item.original_title}
                     </SearchItem>
