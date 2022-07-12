@@ -14,6 +14,7 @@ export default function Card({ movieId, closeAction, favorite }) {
   const loggedInUser = getLoggedInUser();
   const id = loggedInUser?.id;
   const favorites = loggedInUser?.favorites;
+  const [isImageReady, setIsImageReady] = useState(false);
 
   useEffect(() => {
     getMovieById(movieId);
@@ -36,8 +37,8 @@ export default function Card({ movieId, closeAction, favorite }) {
 
   return (
     <Container onClick={(e) => e.target === e.currentTarget && closeCard()}>
-      <Modal>
-        <Image src={`${IMAGE_BASE_URL}${movie?.backdrop_path}`} alt="movie image" />
+      <Modal isImageReady={isImageReady}>
+        <Image src={`${IMAGE_BASE_URL}${movie?.backdrop_path}`} alt="movie image" onLoad={() => setIsImageReady(true)} />
         <MovieInfo>
           {id && (
             <PlusButtonWrapper
@@ -79,6 +80,7 @@ const Container = styled.div`
 `;
 
 const Modal = styled.div`
+  display: ${({ isImageReady }) => (isImageReady ? "block" : "none")};
   position: absolute;
   top: 50%;
   left: 50%;
