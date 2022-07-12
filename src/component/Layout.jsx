@@ -1,13 +1,16 @@
 import { Outlet } from "react-router-dom";
 import Navigation from "./Navigation";
+import styled from "styled-components";
 
 function Layout() {
   return (
-    <div>
+    <Container>
       <Navigation />
       <Outlet />
-    </div>
+    </Container>
   );
 }
 
 export default Layout;
+
+const Container = styled.div``;

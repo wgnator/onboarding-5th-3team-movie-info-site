@@ -1,16 +1,36 @@
 import React from "react";
 import styled from "styled-components";
-import Card from "../component/Card";
+import { getLoggedInUser } from "../utils/useAccount";
+import Thumbnail from "./Thumbnail";
 
-export default function Contents({ moviesToShow }) {
-  return <Container className="Contents">{moviesToShow ? moviesToShow.map((movie) => <Card key={movie.id} movie={movie} />) : <p>영화 목록이 없습니다</p>}</Container>;
-}
+const Contents = ({ movies }) => {
+  const loggedInUser = getLoggedInUser();
+  const favorites = loggedInUser?.favorites;
 
-const Container = styled.body`
-  overflow-y: scroll;
+  const checkFavorites = (movieId) => {
+    return !!favorites?.find((favorite) => favorite === movieId);
+  };
+
+  return (
+    <Container>
+      {movies?.length ? (
+        movies.map((movie) => {
+          return <Thumbnail key={movie.id} movie={movie} isFavorite={checkFavorites(movie.id)} />;
+        })
+      ) : (
+        <p>영화 목록이 없습니다</p>
+      )}
+    </Container>
+  );
+};
+
+export default Contents;
+
+const Container = styled.div`
+  overflow: hidden;
   padding: 0 2rem;
   gap: 2rem;
-  height: 100%;
+  /* height: 100%; */
   padding-top: 80px;
   padding-bottom: 20px;
   display: flex;

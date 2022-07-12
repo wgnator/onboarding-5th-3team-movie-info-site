@@ -13,17 +13,10 @@ export default function Thumbnail({ movie, updateFavorite, isFavorite }) {
   return (
     <>
       <ThumbnailContainer onClick={() => handleThumbnailClick(movie.id)}>
-        <Title>{movie.title}</Title>
+        <DarkVeil movieTitle={movie.title} />
         <Poster alt="poster" src={`${IMAGE_BASE_URL}${movie.poster_path}`} />
       </ThumbnailContainer>
-      {card && (
-        <Card
-          movieId={card}
-          closeAction={() => setCard(false)}
-          favorite={isFavorite}
-          toggleFavorite={updateFavorite}
-        />
-      )}
+      {card && <Card movieId={card} closeAction={() => setCard(false)} favorite={isFavorite} toggleFavorite={updateFavorite} />}
     </>
   );
 }
@@ -32,6 +25,7 @@ const ThumbnailContainer = styled.li`
   width: 200px;
   height: 400px;
   display: flex;
+  align-items: center;
   flex-direction: column;
   border: 1px solid grey;
   border-radius: 5px;
@@ -40,18 +34,44 @@ const ThumbnailContainer = styled.li`
   -moz-osx-font-smoothing: grayscale;
   backface-visibility: hidden;
   transform: translateZ(0);
-  transition: transform 0.25s ease-out;
+  transition: all 0.25s ease-out;
 
   &:hover {
     transform: scale(1.05);
   }
 `;
 
-const Title = styled.h1`
-  white-space: nowrap;
-  overflow: hidden;
-  font-size: 1.5rem;
-  text-overflow: ellipsis;
+const DarkVeil = styled.div`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  left: 0;
+  top: 0;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0);
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  &:hover {
+    background-color: rgb(0, 0, 0, 0.7);
+  }
+  transition: all 0.25s;
+  &:hover {
+    &:before {
+      content: "${(props) => props.movieTitle}";
+      width: 100%;
+      text-align: center;
+      position: absolute;
+      z-index: 2;
+      background-color: rgba(0, 0, 0, 0);
+      color: rgba(255, 255, 255, 1);
+      word-wrap: break-word;
+      font-size: 1.5rem;
+      font-weight: bold;
+
+      transition: all 0.25s;
+    }
+  }
 `;
 
 const Poster = styled.img`

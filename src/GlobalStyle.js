@@ -20,6 +20,30 @@ time, mark, audio, video {
   padding: 0;
   border: 0;
   color: ${theme.fontColor};
-  background-color: ${theme.backColor}
+  background-color: ${theme.backColor};
+  font-family: 'Source Sans Pro', sans-serif;
 }
+body {
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 15px;
+
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #262633;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+    height: 1px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+}
+  
 `;

@@ -6,25 +6,22 @@ export const useMovieModel = () => {
   const [movie, setMovie] = useState(null);
 
   const getMoviesCallback = (response) => {
-    setMovies(response.data.results);
+    setMovies([...movies, ...response.data?.results]);
+    return response;
   };
   const getMovieByIdCallback = (response) => {
     setMovie(response.data);
+    return response;
   };
 
-  const getMoviesByIdsCallback = (response) => {
-    setMovies([...movies, response.data]);
-  };
-
-  const getMovies = (pageNo) => {
-    movieDataService.get(
-      `/movie/popular${pageNo ? "?page=" + pageNo : ""}`,
-      getMoviesCallback
-    );
+  const getMovies = (pageNo = 1) => {
+    return movieDataService.get(`/movie/popular?page=${pageNo}`, (response) => {
+      getMoviesCallback(response);
+    });
   };
 
   const getMovieById = async (id) => {
-    movieDataService.get(`/movie/${id}`, getMovieByIdCallback);
+    return movieDataService.get(`/movie/${id}`, getMovieByIdCallback);
   };
 
   const getMoviesByIds = async (ids) => {
@@ -37,15 +34,15 @@ export const useMovieModel = () => {
     );
     Promise.all(promises).then((results) => {
       setMovies(results);
+      return this;
     });
   };
 
-  const searchMovies = (keyword = null) => {
+  const searchMovies = (keyword = null, pageNo = 1) => {
     if (keyword === null) return;
-    movieDataService.get(
-      `/search/movie${keyword ? "?query=" + keyword : ""}`,
-      getMoviesCallback
-    );
+    return movieDataService.get(`/search/movie?query=${keyword}&page=${pageNo}`, (response) => {
+      getMoviesCallback(response);
+    });
   };
   return {
     movie,
