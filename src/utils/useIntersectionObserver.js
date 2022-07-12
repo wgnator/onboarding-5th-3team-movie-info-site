@@ -3,10 +3,10 @@ import React from "react";
 const options = {
   root: null,
   rootMargin: "0px",
-  threshold: 0.5,
+  threshold: 0,
 };
 
-export default function useIntersectionObserver(ref, callback) {
+export default function useIntersectionObserver(ref, callback, dependencies = []) {
   const onIntersection = ([entry], _observer) => {
     if (entry.isIntersecting) {
       callback();
@@ -19,7 +19,7 @@ export default function useIntersectionObserver(ref, callback) {
       observer.observe(ref.current);
     }
     return () => observer.disconnect();
-  }, []);
+  }, dependencies);
 
   return [ref];
 }

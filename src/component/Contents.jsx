@@ -1,9 +1,10 @@
-import React from 'react';
-import styled from 'styled-components';
-import { getLoggedInUser } from '../utils/useAccount';
-import Thumbnail from './Thumbnail';
 
-export default function Contents({ movies }) {
+import React from "react";
+import styled from "styled-components";
+import { getLoggedInUser } from "../utils/useAccount";
+import Thumbnail from "./Thumbnail";
+
+const Contents = ({ movies }) => {
   const loggedInUser = getLoggedInUser();
   const favorites = loggedInUser?.favorites;
 
@@ -15,26 +16,22 @@ export default function Contents({ movies }) {
     <Container>
       {movies?.length ? (
         movies.map((movie) => {
-          return (
-            <Thumbnail
-              key={movie.id}
-              movie={movie}
-              isFavorite={checkFavorites(movie.id)}
-            />
-          );
+          return <Thumbnail key={movie.id} movie={movie} isFavorite={checkFavorites(movie.id)} />;
         })
       ) : (
         <p>영화 목록이 없습니다</p>
       )}
     </Container>
   );
-}
+};
 
-const Container = styled.body`
-  overflow-y: scroll;
+export default Contents;
+
+const Container = styled.div`
+  overflow: hidden;
   padding: 0 2rem;
   gap: 2rem;
-  height: 100%;
+  /* height: 100%; */
   padding-top: 80px;
   padding-bottom: 20px;
   display: flex;
