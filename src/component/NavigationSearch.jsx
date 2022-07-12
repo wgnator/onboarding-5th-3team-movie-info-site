@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { ReactComponent as SearchIco } from "../images/icons/search-svgrepo-com.svg";
 import { useNavigate } from "react-router";
 import { useMovieModel } from "../models/useMovieModel";
+import HighlightText from "./HightlightText";
 
 export default function NavigationSearch() {
   const { movies, getMovies } = useMovieModel();
@@ -47,13 +48,13 @@ export default function NavigationSearch() {
     navigation(`/search/${searchClick}`);
   };
 
+  const checkFuzzyStringMatch = (term) => {
+    const regex = new RegExp(term);
+    return movies?.filter((movie) => regex.test(movie.title.toLowerCase()));
+  };
+
   const getSearchMovieTitle = (searchInput) => {
-    const result = movies?.filter((movie) => {
-      return movie.original_title
-        .toLowerCase()
-        .slice(0, searchInput.length)
-        .includes(searchInput.toLowerCase());
-    });
+    const result = checkFuzzyStringMatch(searchInput);
     setRelatedSearch(result);
   };
 
@@ -81,7 +82,7 @@ export default function NavigationSearch() {
     setSearchReady(true);
     processChanges(searchInput)
   };
-  const debounce = (callback,delay) => {
+    const debounce = (callback,delay) => {
     let timer;
     return (...args) => {
       clearTimeout(timer);
@@ -91,34 +92,51 @@ export default function NavigationSearch() {
     }
   }
   const processChanges = debounce((value) => getSearchMovieTitle(value),270);
-  return(
-    
-      <SearchWrap show={searchShow} ref={searchBoxRef}>
-          <form onSubmit={(event) => moveToSearchPath(event)}>
-            <SearchIco />
-            <input ref={searchRef} placeholder="보고싶은 영화 ?" onChange={searchOnChange} onFocus={() => setSearchShow(true)} />
-          </form>
-          <SearchBox show={searchShow}>
-            <RecentWrap show={searchShow}>
-              <SearchOption show={searchShow}>{searchReady ? "추천 검색어" : "최근 검색어"}</SearchOption>
-              {searchReady
-                ? relatedSearch?.map((item, index) => (
-                    <SearchItem show={searchShow} onClick={(event) => moveToSearchBoxPath(event)} key={index}>
-                      {item.original_title}
-                    </SearchItem>
-                  ))
-                : recentSearches.length > 0 &&
-                  recentSearches?.map((item, index) =>
-                    index > 4 ? null : (
-                      <SearchItem onClick={(event) => moveToSearchBoxPath(event)} show={searchShow} key={index}>
-                        {item}
-                      </SearchItem>
-                    )
-                  )}
-            </RecentWrap>
-          </SearchBox>
-        </SearchWrap>
-  )
+  return (
+    <SearchWrap show={searchShow} ref={searchBoxRef}>
+      <form onSubmit={(event) => moveToSearchPath(event)}>
+        <SearchIco />
+        <input
+          ref={searchRef}
+          placeholder="보고싶은 영화 ?"
+          onChange={searchOnChange}
+          onFocus={() => setSearchShow(true)}
+        />
+      </form>
+      <SearchBox show={searchShow}>
+        <RecentWrap show={searchShow}>
+          <SearchOption show={searchShow}>
+            {searchReady ? "추천 검색어" : "최근 검색어"}
+          </SearchOption>
+          {searchReady
+            ? relatedSearch.map((item, index) => (
+                <SearchItem
+                  show={searchShow}
+                  onClick={(event) => moveToSearchBoxPath(event)}
+                  key={index}
+                >
+                  <HighlightText
+                    title={item.original_title}
+                    term={searchRef.current.value}
+                  />
+                </SearchItem>
+              ))
+            : recentSearches.length > 0 &&
+              recentSearches?.map((item, index) =>
+                index > 4 ? null : (
+                  <SearchItem
+                    onClick={(event) => moveToSearchBoxPath(event)}
+                    show={searchShow}
+                    key={index}
+                  >
+                    {item}
+                  </SearchItem>
+                )
+              )}
+        </RecentWrap>
+      </SearchBox>
+    </SearchWrap>
+  );
 }
 const SearchWrap = styled.div`
   position: relative;
