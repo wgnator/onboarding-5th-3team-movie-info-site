@@ -5,7 +5,6 @@ const TITLE_IDENTIFIER = "!@#";
 const TITLE_SEPERATOR = `,${TITLE_IDENTIFIER},`;
 
 function HighlightText({ title, term }) {
-  console.log("title, term", title, term);
   const getOriginalTerm = (term) => title.match(getRegex(term)) ?? "";
 
   const injectIdentifier = (term) => title.replaceAll(term, TITLE_SEPERATOR);
@@ -15,7 +14,7 @@ function HighlightText({ title, term }) {
   const removeEmptyValue = (splitedTitle) => {
     return !!!splitedTitle[0] ? splitedTitle.slice(1) : splitedTitle;
   };
-
+  
   const [originalTerm] = getOriginalTerm(term);
 
   // const injectedTitle = injectIdentifier(originalTerm);

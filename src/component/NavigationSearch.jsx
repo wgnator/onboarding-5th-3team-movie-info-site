@@ -13,12 +13,11 @@ export default function NavigationSearch() {
   const [searchReady, setSearchReady] = useState(false);
   const [searchShow, setSearchShow] = useState(false);
   const [recentSearches, setRecentSearches] = useState([]);
+  const navigation = useNavigate();
 
   useEffect(() => {
     getMovies();
-  }, []);
-  const navigation = useNavigate();
-
+  },[])
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -72,17 +71,26 @@ export default function NavigationSearch() {
     localStorage.setItem("searchRecent", recentArr);
     setRecentSearches(getRecent !== null && getRecent.split(","));
   };
-
-  const searchOnChange = () => {
+  
+  const searchOnChange = (e) => {
     const searchInput = searchRef.current.value;
     if (searchInput === "") {
       setSearchReady(false);
       return;
     }
     setSearchReady(true);
-    getSearchMovieTitle(searchInput);
+    processChanges(searchInput)
   };
-
+    const debounce = (callback,delay) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(()=> 
+        callback(...args)
+      ,delay)
+    }
+  }
+  const processChanges = debounce((value) => getSearchMovieTitle(value),270);
   return (
     <SearchWrap show={searchShow} ref={searchBoxRef}>
       <form onSubmit={(event) => moveToSearchPath(event)}>
