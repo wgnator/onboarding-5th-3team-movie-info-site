@@ -91,6 +91,14 @@ const Modal = styled.div`
   max-width: 700px;
   background-color: #262633;
   color: white;
+  &::-webkit-scrollbar {
+    float: right;
+    width: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.2);
+  }
 `;
 
 const Image = styled.img`
