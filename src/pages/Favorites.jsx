@@ -1,3 +1,4 @@
+
 import React, { useEffect } from "react";
 import { useMovieModel } from "../models/useMovieModel";
 import { getLoggedInUser } from "../utils/useAccount";

@@ -14,10 +14,11 @@ export default function Card({ movieId, closeAction, favorite }) {
   const loggedInUser = getLoggedInUser();
   const id = loggedInUser?.id;
   const favorites = loggedInUser?.favorites;
+  const [isImageReady, setIsImageReady] = useState(false);
 
   useEffect(() => {
     getMovieById(movieId);
-  }, []);
+  }, [id]);
 
   const closeCard = () => closeAction();
 
@@ -35,67 +36,69 @@ export default function Card({ movieId, closeAction, favorite }) {
   };
 
   return (
-    <Modal>
-      <Image
-        src={`${IMAGE_BASE_URL}${movie?.backdrop_path}`}
-        alt="movie image"
-      />
-      <MovieInfo>
-        {id && (
-          <PlusButtonWrapper
-            onClick={() => {
-              toggleFavorite(movieId);
-              setMarked((prev) => !prev);
-            }}
-            marked={marked}
-          >
-            <Plus />
-          </PlusButtonWrapper>
-        )}
-        <H1>{movie?.original_title}</H1>
-        <H2>{movie?.tagline}</H2>
-        <Tag>
-          {movie?.status === "Released"
-            ? new Date(movie?.release_date).getFullYear()
-            : "unreleased"}
-        </Tag>
-        <Tag>{movie?.runtime}min</Tag>
-        {movie?.genres.map((gnere) => (
-          <Tag>{gnere.name}</Tag>
-        ))}
-        <Description>{movie?.overview}</Description>
-        <p>
-          Production Countries :{" "}
-          {movie?.production_countries
-            .map((country) => country.name)
-            .join(", ")}
-        </p>
-        <p>
-          Production Company :{" "}
-          {movie?.production_companies
-            .map((company) => company.name)
-            .join(", ")}
-        </p>
-      </MovieInfo>
-      <CloseButtonWrapper onClick={closeCard}>
-        <Close />
-      </CloseButtonWrapper>
-    </Modal>
+    <Container onClick={(e) => e.target === e.currentTarget && closeCard()}>
+      <Modal isImageReady={isImageReady}>
+        <Image src={`${IMAGE_BASE_URL}${movie?.backdrop_path}`} alt="movie image" onLoad={() => setIsImageReady(true)} />
+        <MovieInfo>
+          {id && (
+            <PlusButtonWrapper
+              onClick={() => {
+                toggleFavorite(movieId);
+                setMarked((prev) => !prev);
+              }}
+              marked={marked}
+            >
+              <Plus />
+            </PlusButtonWrapper>
+          )}
+          <H1>{movie?.original_title}</H1>
+          <H2>{movie?.tagline}</H2>
+          <Tag>{movie?.status === "Released" ? new Date(movie?.release_date).getFullYear() : "unreleased"}</Tag>
+          <Tag>{movie?.runtime}min</Tag>
+          {movie?.genres.map((gnere) => (
+            <Tag>{gnere.name}</Tag>
+          ))}
+          <Description>{movie?.overview}</Description>
+          <p>Production Countries : {movie?.production_countries.map((country) => country.name).join(", ")}</p>
+          <p>Production Company : {movie?.production_companies.map((company) => company.name).join(", ")}</p>
+        </MovieInfo>
+        <CloseButtonWrapper onClick={closeCard}>
+          <Close />
+        </CloseButtonWrapper>
+      </Modal>
+    </Container>
   );
 }
 
-const Modal = styled.div`
+const Container = styled.div`
   position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 10;
+`;
+
+const Modal = styled.div`
+  display: ${({ isImageReady }) => (isImageReady ? "block" : "none")};
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
-  height: 95vh;
+  max-height: 95vh;
   overflow-y: auto;
   max-width: 700px;
-  background-color: black;
+  background-color: #262633;
   color: white;
-  z-index: 10;
+  &::-webkit-scrollbar {
+    float: right;
+    width: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.2);
+  }
 `;
 
 const Image = styled.img`
@@ -113,6 +116,7 @@ const PlusButtonWrapper = styled.div`
     height: 50px;
   }
   cursor: pointer;
+  z-index: 100;
 `;
 
 const MovieInfo = styled.div`

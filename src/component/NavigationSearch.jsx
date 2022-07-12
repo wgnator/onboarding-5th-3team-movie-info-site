@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { ReactComponent as SearchIco } from "../images/icons/search-svgrepo-com.svg";
 import { useNavigate } from "react-router";
 import { useMovieModel } from "../models/useMovieModel";
+import HighlightText, { getRegex } from "./HighlightText";
 
 export default function NavigationSearch() {
   const { movies, getMovies } = useMovieModel();
@@ -12,12 +13,16 @@ export default function NavigationSearch() {
   const [searchReady, setSearchReady] = useState(false);
   const [searchShow, setSearchShow] = useState(false);
   const [recentSearches, setRecentSearches] = useState([]);
+  const navigation = useNavigate();
 
   useEffect(() => {
     getMovies();
+  },[])
+    const otherOneTouch = ((event) => {
+  
+  	(document.activeElement).blur() // 현재 활성화된 element의 blur 이벤트 호출
+     
   }, []);
-  const navigation = useNavigate();
-
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -41,38 +46,57 @@ export default function NavigationSearch() {
     saveRecentlySearch(searchRef.current.value);
     navigation(`/search/${searchRef.current.value}`);
     searchRef.current.value = "";
+    setSearchReady(false)
+    setSearchShow(false)
+    searchRef.current.blur()
   };
 
   const moveToSearchBoxPath = (event) => {
-    const searchClick = event.target.innerText;
+    
+    const searchClick = event.target.innerText.split("\n",1).toString();
     navigation(`/search/${searchClick}`);
+    setSearchShow(false)
+  };
+
+  const checkFuzzyStringMatch = (term) => {
+    const regex = new RegExp(term.toLowerCase());
+    return movies?.filter((movie) => getRegex(term).test(movie.title));
   };
 
   const getSearchMovieTitle = (searchInput) => {
-    const result = movies?.filter((movie) => {
-      return movie.original_title
-        .toLowerCase()
-        .slice(0, searchInput.length)
-        .includes(searchInput.toLowerCase());
-    });
+    const result = checkFuzzyStringMatch(searchInput);
     setRelatedSearch(result);
   };
 
   const getRecentlySearch = () => {
     const getRecent = localStorage.getItem("searchRecent");
-    setRecentSearches(getRecent !== null && getRecent.split(","));
+    setRecentSearches(getRecent !== null && getRecent !== ""  && getRecent.split(","));
   };
 
   const saveRecentlySearch = (string) => {
     const getRecent = localStorage.getItem("searchRecent");
+    console.log(getRecent);
     const recentArr = `${
-      getRecent === null ? string : string + "," + getRecent
+      getRecent === null || getRecent === "" ? string : string + "," + getRecent
     }`;
-    localStorage.removeItem("searchRecent");
-    localStorage.setItem("searchRecent", recentArr);
-    setRecentSearches(getRecent !== null && getRecent.split(","));
+    handleLocalStorage(recentArr)
+    setRecentSearches(recentArr !== null && recentArr.split(","));
   };
-
+  const removeRecentlySearch = (event) => {
+    if(recentSearches.length === 1) setSearchShow(false) // 마지막 검색어 삭제되면 searchBox 삭제 !!
+    event.stopPropagation();
+    const targetRecently = event.target.parentElement.innerText.split("\n",1).toString()
+    const recentArr = recentSearches.filter((word) => word !== targetRecently);
+    console.log("타겟",targetRecently,"현재",recentSearches ,"변경",recentArr);
+    handleLocalStorage(recentArr)
+    setRecentSearches(recentArr);
+    
+    
+  }
+  const handleLocalStorage = (value) => {
+    localStorage.removeItem("searchRecent");
+    localStorage.setItem("searchRecent", value);
+  }
   const searchOnChange = () => {
     const searchInput = searchRef.current.value;
     if (searchInput === "") {
@@ -80,9 +104,20 @@ export default function NavigationSearch() {
       return;
     }
     setSearchReady(true);
-    getSearchMovieTitle(searchInput);
+    setSearchShow(true);
+    processChanges(searchInput)
   };
-
+    const debounce = (callback,delay) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(()=> 
+        {console.log("args",...args)
+        callback(...args)}
+      ,delay)
+    }
+  }
+  const processChanges = debounce((value) => getSearchMovieTitle(value),200);
   return (
     <SearchWrap show={searchShow} ref={searchBoxRef}>
       <form onSubmit={(event) => moveToSearchPath(event)}>
@@ -91,7 +126,10 @@ export default function NavigationSearch() {
           ref={searchRef}
           placeholder="보고싶은 영화 ?"
           onChange={searchOnChange}
-          onFocus={() => setSearchShow(true)}
+          onFocus={() => {
+            if(recentSearches.length > 0)
+            setSearchShow(true)
+          }}
         />
       </form>
       <SearchBox show={searchShow}>
@@ -100,13 +138,17 @@ export default function NavigationSearch() {
             {searchReady ? "추천 검색어" : "최근 검색어"}
           </SearchOption>
           {searchReady
-            ? relatedSearch.map((item, index) => (
+            ? relatedSearch?.map((item, index) => (
                 <SearchItem
                   show={searchShow}
                   onClick={(event) => moveToSearchBoxPath(event)}
                   key={index}
+                  style={{display: searchShow && "block"}}
                 >
-                  {item.original_title}
+                  <HighlightText
+                    title={item.original_title}
+                    term={searchRef.current.value}
+                  />
                 </SearchItem>
               ))
             : recentSearches.length > 0 &&
@@ -116,8 +158,12 @@ export default function NavigationSearch() {
                     onClick={(event) => moveToSearchBoxPath(event)}
                     show={searchShow}
                     key={index}
+                    style={{display: searchShow && "flex"}}
                   >
-                    {item}
+                    <Item>{item}</Item>
+                    <ItemRemove onClick={removeRecentlySearch}>
+                      삭제
+                    </ItemRemove>
                   </SearchItem>
                 )
               )}
@@ -126,6 +172,7 @@ export default function NavigationSearch() {
     </SearchWrap>
   );
 }
+
 const SearchWrap = styled.div`
   position: relative;
   @media (max-width: 768px) {
@@ -222,14 +269,27 @@ const SearchItem = styled.div`
   transition: all 1s ease;
   cursor: pointer;
   /* border: 1px solid black; */
+  
   ${(props) =>
     props.show &&
     `
-    display:block;
+    
     border: 1px solid black
     font-size: 16px;
+    justify-content: space-between;
   `}
   :hover {
     background-color: rgb(0, 0, 0, 0.3);
+  }
+`;
+const Item = styled.div`
+  background-color: transparent;
+`;
+const ItemRemove = styled.div`
+  background-color: transparent;
+  border: 1px solid black;
+  color: black;
+  :hover{
+    background-color: red;
   }
 `;
