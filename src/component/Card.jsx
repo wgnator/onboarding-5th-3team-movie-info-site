@@ -3,12 +3,17 @@ import styled from "styled-components";
 import { useMovieModel } from "../models/useMovieModel";
 import { ReactComponent as Plus } from "../images/icons/plus-svgrepo-com.svg";
 import { ReactComponent as Close } from "../images/icons/x-svgrepo-com.svg";
+import { getLoggedInUser, saveToken } from "../utils/useAccount";
+import AccessUserDB from "../models/AccessUserDB";
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
 
-export default function Card({ movieId, closeAction, favorite, toggleFavorite }) {
+export default function Card({ movieId, closeAction, favorite }) {
   const { movie, getMovieById } = useMovieModel();
   const [marked, setMarked] = useState(favorite);
+  const loggedInUser = getLoggedInUser();
+  const id = loggedInUser?.id;
+  const favorites = loggedInUser?.favorites;
 
   useEffect(() => {
     getMovieById(movieId);
@@ -16,29 +21,61 @@ export default function Card({ movieId, closeAction, favorite, toggleFavorite })
 
   const closeCard = () => closeAction();
 
+  const toggleFavorite = (movieId) => {
+    if (favorites.includes(movieId)) {
+      const index = favorites.indexOf(movieId);
+      favorites.splice(index, 1);
+    } else {
+      favorites.push(movieId);
+    }
+    AccessUserDB.updateUser(`${id}`, {
+      favorites: favorites,
+    });
+    saveToken({ ...loggedInUser, favorites: favorites });
+  };
+
   return (
     <Modal>
-      <Image src={`${IMAGE_BASE_URL}${movie?.backdrop_path}`} alt="movie image" />
+      <Image
+        src={`${IMAGE_BASE_URL}${movie?.backdrop_path}`}
+        alt="movie image"
+      />
       <MovieInfo>
-        <PlusButtonWrapper
-          onClick={() => {
-            toggleFavorite(movieId);
-            setMarked((prev) => !prev);
-          }}
-          marked={marked}
-        >
-          <Plus />
-        </PlusButtonWrapper>
+        {id && (
+          <PlusButtonWrapper
+            onClick={() => {
+              toggleFavorite(movieId);
+              setMarked((prev) => !prev);
+            }}
+            marked={marked}
+          >
+            <Plus />
+          </PlusButtonWrapper>
+        )}
         <H1>{movie?.original_title}</H1>
         <H2>{movie?.tagline}</H2>
-        <Tag>{movie?.status === "Released" ? new Date(movie?.release_date).getFullYear() : "unreleased"}</Tag>
+        <Tag>
+          {movie?.status === "Released"
+            ? new Date(movie?.release_date).getFullYear()
+            : "unreleased"}
+        </Tag>
         <Tag>{movie?.runtime}min</Tag>
         {movie?.genres.map((gnere) => (
           <Tag>{gnere.name}</Tag>
         ))}
         <Description>{movie?.overview}</Description>
-        <p>Production Countries : {movie?.production_countries.map((country) => country.name).join(", ")}</p>
-        <p>Production Company : {movie?.production_companies.map((company) => company.name).join(", ")}</p>
+        <p>
+          Production Countries :{" "}
+          {movie?.production_countries
+            .map((country) => country.name)
+            .join(", ")}
+        </p>
+        <p>
+          Production Company :{" "}
+          {movie?.production_companies
+            .map((company) => company.name)
+            .join(", ")}
+        </p>
       </MovieInfo>
       <CloseButtonWrapper onClick={closeCard}>
         <Close />

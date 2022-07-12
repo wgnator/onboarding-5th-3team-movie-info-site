@@ -1,15 +1,28 @@
-import React from 'react';
-import styled from 'styled-components';
-
-import Thumbnail from './Thumbnail';
+import React from "react";
+import styled from "styled-components";
+import { getLoggedInUser } from "../utils/useAccount";
+import Thumbnail from "./Thumbnail";
 
 const Contents = ({ movies }) => {
+  const loggedInUser = getLoggedInUser();
+  const favorites = loggedInUser?.favorites;
+
+  const checkFavorites = (movieId) => {
+    return !!favorites?.find((favorite) => favorite === movieId);
+  };
+
   return (
     <Container>
       {movies.results?.length ? (
-        movies.results.map((movie) => (
-          <Thumbnail key={movie.id} movie={movie} />
-        ))
+        movies.results.map((movie) => {
+          return (
+            <Thumbnail
+              key={movie.id}
+              movie={movie}
+              isFavorite={checkFavorites(movie.id)}
+            />
+          );
+        })
       ) : (
         <p>영화 목록이 없습니다</p>
       )}
