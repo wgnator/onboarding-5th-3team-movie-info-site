@@ -19,7 +19,7 @@ export default function Search() {
       !response.data.results.length && setHasReachedLastPage(true);
       setIsDataLoaded(true);
     });
-  }, [pageNo]);
+  }, [movieTitle, pageNo]);
 
   const [ref] = useIntersectionObserver(
     endOfPageRef,

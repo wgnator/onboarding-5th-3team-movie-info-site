@@ -6,7 +6,6 @@ import Thumbnail from "./Thumbnail";
 const Contents = ({ movies }) => {
   const loggedInUser = getLoggedInUser();
   const favorites = loggedInUser?.favorites;
-
   const checkFavorites = (movieId) => {
     return !!favorites?.find((favorite) => favorite === movieId);
   };

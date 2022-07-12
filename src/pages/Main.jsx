@@ -3,7 +3,6 @@ import { useMovieModel } from "../models/useMovieModel";
 import Contents from "../component/Contents";
 import styled from "styled-components";
 import useIntersectionObserver from "../utils/useIntersectionObserver";
-
 export default function Main() {
   const { movies, getMovies } = useMovieModel();
   const [pageNo, setPageNo] = useState(1);

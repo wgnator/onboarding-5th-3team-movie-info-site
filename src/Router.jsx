@@ -1,3 +1,4 @@
+
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { getLoggedInUser } from './utils/useAccount';
 
@@ -23,8 +24,6 @@ const LOGGED_IN_ROUTER = [
 ];
 
 export default function Router() {
-  const isLoggedIn = getLoggedInUser();
-
   return (
     <BrowserRouter>
       <Routes>

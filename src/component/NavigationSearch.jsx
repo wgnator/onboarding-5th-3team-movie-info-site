@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { ReactComponent as SearchIco } from "../images/icons/search-svgrepo-com.svg";
 import { useNavigate } from "react-router";
 import { useMovieModel } from "../models/useMovieModel";
+import HighlightText from "./HightlightText";
 
 export default function NavigationSearch() {
   const { movies, getMovies } = useMovieModel();
@@ -12,12 +13,11 @@ export default function NavigationSearch() {
   const [searchReady, setSearchReady] = useState(false);
   const [searchShow, setSearchShow] = useState(false);
   const [recentSearches, setRecentSearches] = useState([]);
+  const navigation = useNavigate();
 
   useEffect(() => {
     getMovies();
-  }, []);
-  const navigation = useNavigate();
-
+  },[])
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -48,13 +48,13 @@ export default function NavigationSearch() {
     navigation(`/search/${searchClick}`);
   };
 
+  const checkFuzzyStringMatch = (term) => {
+    const regex = new RegExp(term);
+    return movies?.filter((movie) => regex.test(movie.title.toLowerCase()));
+  };
+
   const getSearchMovieTitle = (searchInput) => {
-    const result = movies?.filter((movie) => {
-      return movie.original_title
-        .toLowerCase()
-        .slice(0, searchInput.length)
-        .includes(searchInput.toLowerCase());
-    });
+    const result = checkFuzzyStringMatch(searchInput);
     setRelatedSearch(result);
   };
 
@@ -72,17 +72,26 @@ export default function NavigationSearch() {
     localStorage.setItem("searchRecent", recentArr);
     setRecentSearches(getRecent !== null && getRecent.split(","));
   };
-
-  const searchOnChange = () => {
+  
+  const searchOnChange = (e) => {
     const searchInput = searchRef.current.value;
     if (searchInput === "") {
       setSearchReady(false);
       return;
     }
     setSearchReady(true);
-    getSearchMovieTitle(searchInput);
+    processChanges(searchInput)
   };
-
+    const debounce = (callback,delay) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(()=> 
+        callback(...args)
+      ,delay)
+    }
+  }
+  const processChanges = debounce((value) => getSearchMovieTitle(value),270);
   return (
     <SearchWrap show={searchShow} ref={searchBoxRef}>
       <form onSubmit={(event) => moveToSearchPath(event)}>
@@ -106,7 +115,10 @@ export default function NavigationSearch() {
                   onClick={(event) => moveToSearchBoxPath(event)}
                   key={index}
                 >
-                  {item.original_title}
+                  <HighlightText
+                    title={item.original_title}
+                    term={searchRef.current.value}
+                  />
                 </SearchItem>
               ))
             : recentSearches.length > 0 &&
