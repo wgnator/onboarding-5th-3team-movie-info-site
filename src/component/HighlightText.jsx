@@ -5,7 +5,7 @@ const TITLE_SEPERATOR = `,${TITLE_IDENTIFIER},`;
 
 function HighlightText({ title, term }) {
   const injectIdentifier = () =>
-    title.toLocaleLowerCase().replaceAll(term, TITLE_SEPERATOR);
+    title.toLocaleLowerCase().replaceAll(term.toLowerCase(), TITLE_SEPERATOR);
 
   const splitTitle = (title) => title.split(",");
 
@@ -21,7 +21,7 @@ function HighlightText({ title, term }) {
     <>
       {processedTitle.map((word, idx) =>
         word === TITLE_IDENTIFIER ? (
-          <HighlightSpan>{term}</HighlightSpan>
+          <HighlightSpan>{term.toLowerCase()}</HighlightSpan>
         ) : (
           <Span>{word}</Span>
         )

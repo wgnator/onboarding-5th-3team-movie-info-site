@@ -1,11 +1,12 @@
-
 import React from "react";
 import styled from "styled-components";
-// import { ReactComponent as LogoIco } from "../images/icons/netflix-svgrepo-com.svg";
+// import { ReactComponent as LogoIco } from "../images/icons/nav-logo-svgrepo-com.svg";
 import { useNavigate } from "react-router";
-import NavigationButtons from "./NavigationButtons";
+import NavigationButtons from "../NavigationButtons";
 import NavigationSearch from "./NavigationSearch";
+
 export default function Navigation({movies}) {
+  
   const navigate = useNavigate();
 
   return (
