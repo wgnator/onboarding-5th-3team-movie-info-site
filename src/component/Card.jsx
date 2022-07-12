@@ -35,7 +35,7 @@ export default function Card({ movieId, closeAction, favorite }) {
   };
 
   return (
-    <Container>
+    <Container onClick={(e) => e.target === e.currentTarget && closeCard()}>
       <Modal>
         <Image src={`${IMAGE_BASE_URL}${movie?.backdrop_path}`} alt="movie image" />
         <MovieInfo>
