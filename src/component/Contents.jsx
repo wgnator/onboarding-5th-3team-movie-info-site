@@ -30,7 +30,7 @@ export default function Contents({ movies }) {
   );
 }
 
-const Container = styled.div`
+const Container = styled.body`
   overflow-y: scroll;
   padding: 0 2rem;
   gap: 2rem;
