@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { ReactComponent as SearchIco } from "../images/icons/search-svgrepo-com.svg";
 import { useNavigate } from "react-router";
 import { useMovieModel } from "../models/useMovieModel";
+import HighlightText, { getRegex } from "./HighlightText";
 
 export default function NavigationSearch() {
   const { movies, getMovies } = useMovieModel();
@@ -48,13 +49,12 @@ export default function NavigationSearch() {
     navigation(`/search/${searchClick}`);
   };
 
+  const checkFuzzyStringMatch = (term) => {
+    return movies?.filter((movie) => getRegex(term).test(movie.title));
+  };
+
   const getSearchMovieTitle = (searchInput) => {
-    const result = movies?.filter((movie) => {
-      return movie.original_title
-        .toLowerCase()
-        .slice(0, searchInput.length)
-        .includes(searchInput.toLowerCase());
-    });
+    const result = checkFuzzyStringMatch(searchInput);
     setRelatedSearch(result);
   };
 
@@ -106,7 +106,10 @@ export default function NavigationSearch() {
                   onClick={(event) => moveToSearchBoxPath(event)}
                   key={index}
                 >
-                  {item.original_title}
+                  <HighlightText
+                    title={item.original_title}
+                    term={searchRef.current.value}
+                  />
                 </SearchItem>
               ))
             : recentSearches.length > 0 &&
