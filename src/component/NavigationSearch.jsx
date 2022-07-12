@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { ReactComponent as SearchIco } from "../images/icons/search-svgrepo-com.svg";
 import { useNavigate } from "react-router";
 import { useMovieModel } from "../models/useMovieModel";
-import HighlightText from "./HighlightText";
+import HighlightText, { getRegex } from "./HighlightText";
 
 export default function NavigationSearch() {
   const { movies, getMovies } = useMovieModel();
@@ -60,7 +60,7 @@ export default function NavigationSearch() {
 
   const checkFuzzyStringMatch = (term) => {
     const regex = new RegExp(term.toLowerCase());
-    return movies?.filter((movie) => regex.test(movie.title.toLowerCase()));
+    return movies?.filter((movie) => getRegex(term).test(movie.title));
   };
 
   const getSearchMovieTitle = (searchInput) => {

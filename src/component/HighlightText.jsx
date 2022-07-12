@@ -1,31 +1,41 @@
+import { Fragment } from "react";
 import styled from "styled-components";
 
 const TITLE_IDENTIFIER = "!@#";
 const TITLE_SEPERATOR = `,${TITLE_IDENTIFIER},`;
 
 function HighlightText({ title, term }) {
-  const injectIdentifier = () =>
-    title.toLocaleLowerCase().replaceAll(term.toLowerCase(), TITLE_SEPERATOR);
+  const getOriginalTerm = (term) => title.match(getRegex(term)) ?? "";
+
+  const injectIdentifier = (term) => title.replaceAll(term, TITLE_SEPERATOR);
 
   const splitTitle = (title) => title.split(",");
 
   const removeEmptyValue = (splitedTitle) => {
     return !!!splitedTitle[0] ? splitedTitle.slice(1) : splitedTitle;
   };
+  
+  const [originalTerm] = getOriginalTerm(term);
 
-  const injectedTitle = injectIdentifier();
-  const split = splitTitle(injectedTitle);
-  const processedTitle = removeEmptyValue(split);
+  // const injectedTitle = injectIdentifier(originalTerm);
+  // const split = splitTitle(injectedTitle);
+  // const processedTitle = removeEmptyValue(split);
+
+  const processedTitle = removeEmptyValue(
+    splitTitle(injectIdentifier(originalTerm))
+  );
 
   return (
     <>
-      {processedTitle.map((word, idx) =>
-        word === TITLE_IDENTIFIER ? (
-          <HighlightSpan>{term.toLowerCase()}</HighlightSpan>
-        ) : (
-          <Span>{word}</Span>
-        )
-      )}
+      {processedTitle.map((word, idx) => (
+        <Fragment key={idx}>
+          {word === TITLE_IDENTIFIER ? (
+            <HighlightSpan>{getOriginalTerm(term)[0]}</HighlightSpan>
+          ) : (
+            <Span>{word}</Span>
+          )}
+        </Fragment>
+      ))}
     </>
   );
 }
@@ -36,6 +46,8 @@ const HighlightSpan = styled.span`
   background-color: transparent;
 `;
 const Span = styled.span`
-  color: inherit;
+  color: black;
   background-color: transparent;
 `;
+
+export const getRegex = (term) => new RegExp(term, "i");
