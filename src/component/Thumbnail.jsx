@@ -1,18 +1,23 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
+import Card from "./Card";
 
-export default function Thumbnail({ movie, setCard }) {
-  const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/original';
-
+export default function Thumbnail({ movie, updateFavorite,setCard }) {
+  const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
+  const [card, setCard] = useState(false);
+  
   const handleThumbnailClick = (movieId) => {
     setCard(movieId);
   };
 
   return (
-    <ThumbnailContainer onClick={() => handleThumbnailClick(movie.id)}>
-      <Title>{movie.title}</Title>
-      <Poster alt="poster" src={`${IMAGE_BASE_URL}${movie.poster_path}`} />
-    </ThumbnailContainer>
+    <>
+      <ThumbnailContainer onClick={() => handleThumbnailClick(movie.id)}>
+        <Title>{movie.title}</Title>
+        <Poster alt="poster" src={`${IMAGE_BASE_URL}${movie.poster_path}`} />
+      </ThumbnailContainer>
+      {card && <Card movieId={card} closeAction={() => setCard(false)} favorite={true} toggleFavorite={updateFavorite} />}
+    </>
   );
 }
 

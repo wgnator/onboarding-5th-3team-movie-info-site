@@ -7,7 +7,6 @@ import NavigationButtons from "./NavigationButtons";
 import NavigationSearch from "./NavigationSearch";
 
 export default function Navigation({movies}) {
-  
   const navigate = useNavigate();
 
   return (
