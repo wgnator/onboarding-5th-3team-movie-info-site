@@ -2,11 +2,11 @@ import { userDBService } from "../services/userDBService";
 
 export default class AccessUserDB {
   static getUsers = () => {
-    return userDBService.get("/");
+    return userDBService.get("");
   };
 
-  static getUser = (id) => {
-    return userDBService.get(`/${id}`);
+  static getUser = (email) => {
+    return userDBService.get(`?email=${email}&limit=1`);
   };
 
   static createUser = (data) => {
