@@ -1,10 +1,8 @@
-
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router";
 import NavigationButtons from "./NavigationButtons";
 import NavigationSearch from "./NavigationSearch";
-
 export default function Navigation({ movies }) {
   const navigate = useNavigate();
 

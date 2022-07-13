@@ -55,13 +55,13 @@ export default function Card({ movieId, closeAction, favorite , setFavorite }) {
           <H1>{movie?.original_title}</H1>
           <H2>{movie?.tagline}</H2>
           <Tag>{movie?.status === "Released" ? new Date(movie?.release_date).getFullYear() : "unreleased"}</Tag>
-          <Tag>{movie?.runtime}min</Tag>
+          <Tag>{movie?.runtime}분</Tag>
           {movie?.genres.map((gnere) => (
             <Tag>{gnere.name}</Tag>
           ))}
           <Description>{movie?.overview}</Description>
-          <p>Production Countries : {movie?.production_countries.map((country) => country.name).join(", ")}</p>
-          <p>Production Company : {movie?.production_companies.map((company) => company.name).join(", ")}</p>
+          <p>국가 : {movie?.production_countries.map((country) => country.name).join(", ")}</p>
+          <p>제작 : {movie?.production_companies.map((company) => company.name).join(", ")}</p>
         </MovieInfo>
         <CloseButtonWrapper onClick={closeCard}>
           <Close />

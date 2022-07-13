@@ -1,11 +1,9 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import { useMovieModel } from "../models/useMovieModel";
 import Contents from "../component/Contents";
 import Footer from "../component/Footer";
 import styled from "styled-components";
 import useIntersectionObserver from "../utils/useIntersectionObserver";
-
 export default function Main() {
   const { movies, getMovies } = useMovieModel();
   const [pageNo, setPageNo] = useState(1);
@@ -32,8 +30,7 @@ export default function Main() {
   return (
     <>
       <Contents movies={movies} />
-      {hasReachedLastPage ? "" : <EndOfPageDetector ref={ref} />}
-      <Footer />
+      {hasReachedLastPage || movies.length < 20 ? <Footer /> : <EndOfPageDetector ref={ref} />}
     </>
   );
 }
