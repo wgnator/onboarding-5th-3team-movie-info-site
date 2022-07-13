@@ -8,7 +8,7 @@
 | 이름   | 기능구현 및역할     | 
 | ------ | ------------------- | 
 | 김영호 |  | 
-| 이성진 |  | 
+| 이성진 | User model & logic, fuzzy search match, Search result hightlighting | 
 | 정윤서 | Navigation , Search Input | 
 | 조혜빈 |  | 
 | 한운기 |  | 
@@ -107,10 +107,10 @@
 - 로그인 기능
   - 사용자계정(email 형식), 비밀번호 검증
   - 검증 실패 시 경고 출력
-  - 로그인 후 localStorage에 토큰 저장(email을 저장함)
-  - localStorage에서 토큰 불러오는 함수 추가
+  - 로그인 후 localStorage에 토큰 저장(모든 사용자 정보 저장)
+  - localStorage에 저장된 사용자 정보를 쉽게 불러오는 함수 추가
 - 계정 생성 기능
-  - 로그인 페이지와 구조가 거의 같아 로그인 페이지에서 styled components와 함수 일부 import해서 재사용
+  - 로그인 페이지 재사용
 
 ```typescript
 // model interface, JSON Database에 이 형태로 저장
@@ -126,8 +126,7 @@ interface User {
 
 - likes : 유저는 영화 하나 당 한 번 like를 할 수 있고, user medel에 like한 영화의 id가 저장
 - favorites : like와 같다
-- (선택) watched : 영화를 시청한 횟수를 기록한다
-- (선택) 검색 기능에서 해당 정보를 불러와 내가 봤던 영화를 표시할 수 있다
+
 
 ### 2.B. Navigation (정윤서)
 - 네이게이션 바
@@ -150,7 +149,7 @@ interface User {
        - getMovies(): tmdb 사이트의 현재 most popular 데이터를 불러오기 (메인 페이지에서 활용)
        - getMovieById(): 특정 영화에 대한 자세한 정보 불러오기 (Thumbnail 클릭시 나타나는 Card에서 활용)
        - getMoviesByIds(): 여러개의 특정 영화들의 정보를 한꺼번에 불러오기 (즐겨찾기 페이지에서 활용)
-       - searchMovies(): 특정 키워드를 내포하는 영화들을 검색하기
+       - searchMovies(): 특정 키워드를 내포하는 영화들을 검색하기 (검색페이지에서 활용)
 ### 2.C-2. user data fetch module 구현 (한운기)
 - json-server를 활용한 사용자 정보에 대한 CRUD 를 위한 module 및 custom hook 구현
     - AccessUserDB 모듈 기능:
