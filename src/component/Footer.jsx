@@ -8,7 +8,7 @@ export default function Footer() {
 const Container = styled.footer`
   margin-top: 50px;
   width: 100%;
-  height: 50px;
+  height: 15%;
   border-top: 2px #ffffff solid;
   padding: 15px;
   color: #ffffff;

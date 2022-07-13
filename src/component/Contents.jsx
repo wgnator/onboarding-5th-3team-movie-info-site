@@ -26,6 +26,7 @@ const Contents = ({ movies }) => {
 export default Contents;
 
 const Container = styled.div`
+  min-height: 78%;
   padding: 0 2rem;
   gap: 2rem;
   padding-top: 20px;
