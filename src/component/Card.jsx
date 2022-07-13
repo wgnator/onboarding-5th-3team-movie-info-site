@@ -8,7 +8,7 @@ import AccessUserDB from "../models/AccessUserDB";
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
 
-export default function Card({ movieId, closeAction, favorite }) {
+export default function Card({ movieId, closeAction, favorite , setFavorite }) {
   const { movie, getMovieById } = useMovieModel();
   const [marked, setMarked] = useState(favorite);
   const loggedInUser = getLoggedInUser();
@@ -45,6 +45,7 @@ export default function Card({ movieId, closeAction, favorite }) {
               onClick={() => {
                 toggleFavorite(movieId);
                 setMarked((prev) => !prev);
+                setFavorite((prev) => !prev)
               }}
               marked={marked}
             >
