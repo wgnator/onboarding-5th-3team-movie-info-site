@@ -13,7 +13,7 @@ export default function NavigationSearch() {
   const [searchReady, setSearchReady] = useState(false);
   const [searchShow, setSearchShow] = useState(false);
   const [recentSearches, setRecentSearches] = useState([]);
-  const navigation = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getMovies();
@@ -34,7 +34,14 @@ export default function NavigationSearch() {
     }
     document.addEventListener("mousedown", handleClickOutside);
   }, [searchBoxRef]);
-
+  useEffect(() => {
+    if(searchShow){
+      document.body.style= `overflow:hidden`;
+    }else{
+      document.body.style= `overflow:auto`;
+    }
+  },[searchShow])
+  
   useEffect(() => {
     if (movies) {
       getRecentlySearch();
@@ -42,24 +49,25 @@ export default function NavigationSearch() {
   }, [movies]);
 
   const moveToSearchPath = (event) => {
+    const path = searchRef.current.value;
     event.preventDefault();
     saveRecentlySearch(searchRef.current.value);
-    navigation(`/search/${searchRef.current.value}`);
     searchRef.current.value = "";
     setSearchReady(false)
     setSearchShow(false)
     searchRef.current.blur()
+    navigate(`/search/${path}`);
   };
 
   const moveToSearchBoxPath = (event) => {
-    
     const searchClick = event.target.innerText.split("\n",1).toString();
-    navigation(`/search/${searchClick}`);
+    navigate(`/search/${searchClick}`);
+    
     setSearchShow(false)
+    
   };
 
   const checkFuzzyStringMatch = (term) => {
-    const regex = new RegExp(term.toLowerCase());
     return movies?.filter((movie) => getRegex(term).test(movie.title));
   };
 
@@ -82,6 +90,7 @@ export default function NavigationSearch() {
     handleLocalStorage(recentArr)
     setRecentSearches(recentArr !== null && recentArr.split(","));
   };
+
   const removeRecentlySearch = (event) => {
     if(recentSearches.length === 1) setSearchShow(false) // 마지막 검색어 삭제되면 searchBox 삭제 !!
     event.stopPropagation();
@@ -107,7 +116,8 @@ export default function NavigationSearch() {
     setSearchShow(true);
     processChanges(searchInput)
   };
-    const debounce = (callback,delay) => {
+  
+  const debounce = (callback,delay) => {
     let timer;
     return (...args) => {
       clearTimeout(timer);
@@ -213,11 +223,12 @@ const SearchBox = styled.div`
   display: flexbox;
   width: 18vw;
   font-size: 16px;
+
   border-radius: 0 0 5px 5px;
   background-color: white;
   visibility: hidden;
   border: 1px solid #d2cbcbcc;
-
+  
   ${(props) =>
     props.show &&
     `
@@ -231,7 +242,8 @@ const SearchBox = styled.div`
 const RecentWrap = styled.div`
   width: 100%;
   padding-bottom: 0px;
-  overflow: hidden;
+  height: 12rem;
+  overflow-y: scroll;
   color: black;
   background-color: white;
   /* transition: all 1s ease; */
@@ -240,6 +252,9 @@ const RecentWrap = styled.div`
     `
     padding-bottom: 5px;
   `}
+  ::-webkit-scrollbar {
+    width: 1.3rem;
+  }
 `;
 const SearchOption = styled.div`
   display: none;

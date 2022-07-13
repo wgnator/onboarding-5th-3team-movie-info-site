@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from "react";
 import { useMovieModel } from "../models/useMovieModel";
 import Contents from "../component/Contents";

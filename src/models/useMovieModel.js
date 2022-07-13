@@ -42,7 +42,6 @@ export const useMovieModel = () => {
     if (keyword === null) return;
     return movieDataService.get(`/search/movie?query=${keyword}&page=${pageNo}`, (response) => {
       getMoviesCallback(response);
-      console.log("received data page:", response.data.page);
     });
   };
 

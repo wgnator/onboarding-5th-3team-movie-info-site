@@ -1,71 +1,22 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { ReactComponent as SearchIco } from "../images/icons/search-svgrepo-com.svg";
-import { ReactComponent as LogoIco } from "../images/icons/netflix-svgrepo-com.svg";
-import { useRef } from "react";
-import LoginButton from "./LoginButton";
-import { theme } from "../theme";
-import { SEARCH_TAP } from "../const/consts";
 
-export default function Navigation({ selectedTap, setSelectedTap }) {
-  const [searchShow, setSearchShow] = useState(false);
-  const searchRef = useRef();
-  // const recentSearches = ["드라마","애니메이션","코미디","주인공","인기영화"];
-  const [recentSearches, setRecentSearches] = useState([]);
-  const searchMove = (event) => {
-    event.preventDefault();
-    recentSearchSave(searchRef.current.value);
-    searchRef.current.value = "";
-  };
-  const recentSearchSave = (string) => {
-    const getRecent = localStorage.getItem("searchRecent");
-    const recentArr = `${
-      getRecent === null ? string : string + "," + getRecent
-    }`;
-    localStorage.removeItem("searchRecent");
-    localStorage.setItem("searchRecent", recentArr, string);
-    setRecentSearches(getRecent !== null && getRecent.split(","));
-  };
-  const searchOnChange = () => {};
+import React from "react";
+import styled from "styled-components";
+// import { ReactComponent as LogoIco } from "../images/icons/netflix-svgrepo-com.svg";
+import { useNavigate } from "react-router";
+import NavigationButtons from "./NavigationButtons";
+import NavigationSearch from "./NavigationSearch";
+export default function Navigation({movies}) {
+  const navigate = useNavigate();
 
   return (
     <Container>
       <Wrap>
-        <LogoWrap>
-          <LogoIco />
+        <LogoWrap onClick={() => navigate("/")}>
+          {/* <LogoIco /> */}
           <span>Movie</span>
         </LogoWrap>
-        {selectedTap === SEARCH_TAP && (
-          <SearchWrap searchShow={searchShow}>
-            <Column>
-              <form onSubmit={(event) => searchMove(event)}>
-                <SearchIco />
-                <input
-                  ref={searchRef}
-                  placeholder="보고싶은 영화 ?"
-                  onChange={searchOnChange}
-                  onFocus={() => setSearchShow(true)}
-                  onBlur={() => setSearchShow(false)}
-                />
-                {/* <button>Go</button> */}
-              </form>
-              <SearchRecent show={searchShow}>
-                <RecentWrap>
-                  <SearchOption>Recent Searches</SearchOption>
-                  {recentSearches.length > 0 &&
-                    recentSearches.map((item) => (
-                      <SearchItem>{item}</SearchItem>
-                    ))}
-                </RecentWrap>
-              </SearchRecent>
-            </Column>
-          </SearchWrap>
-        )}
-
-        <LoginButton
-          selectedTap={selectedTap}
-          setSelectedTap={setSelectedTap}
-        />
+        <NavigationSearch movies={movies}/>
+        <NavigationButtons />
       </Wrap>
     </Container>
   );
@@ -75,7 +26,7 @@ const Container = styled.header`
   position: fixed;
   height: 70px;
   width: 100%;
-  background-color: ${theme.backColor};
+  background-color: #262633;
   border-bottom: 2px solid black;
   top: 0;
   z-index: 10;
@@ -88,9 +39,6 @@ const Wrap = styled.div`
   padding: 16px;
   width: 70vw;
   margin: 0 auto;
-`;
-const Column = styled.div`
-  position: relative;
 `;
 const LogoWrap = styled.div`
   transition: all 400ms ease;
@@ -109,65 +57,8 @@ const LogoWrap = styled.div`
       opacity: 0;
     }
   }
-
   :hover {
     color: yellow;
     animation: blink-effect 2s ease infinite;
   }
-`;
-const SearchWrap = styled.div`
-  @media (max-width: 768px) {
-    display: none;
-  }
-  form {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 18vw;
-    background-color: white;
-    border-radius: 5px 5px 5px 5px;
-    input {
-      width: 100%;
-      margin-left: 10px;
-      font-size: 16px;
-      white-space: nowrap;
-      border: none;
-      border-radius: 5px;
-      :focus {
-        outline: 0;
-      }
-    }
-  }
-
-  svg {
-    margin-left: 5px;
-    fill: gray;
-    width: 24px;
-    height: 24px;
-    padding: 4px;
-  }
-`;
-const SearchRecent = styled.div`
-  display: ${(props) => (props.show ? "block" : "none")};
-  position: absolute;
-  width: 100%;
-  background-color: black;
-  color: black;
-  font-size: 16px;
-  height: 13rem;
-`;
-const RecentWrap = styled.div`
-  padding: 0 10px;
-`;
-const SearchItem = styled.div`
-  padding: 3px;
-  margin-top: 5px;
-  border-radius: 5px;
-  border: 1px solid red;
-`;
-const SearchOption = styled.div`
-  margin: 5px 0;
-  border: none;
-  font-weight: bold;
 `;

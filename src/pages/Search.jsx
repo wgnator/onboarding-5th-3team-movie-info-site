@@ -1,9 +1,11 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useMovieModel } from "../models/useMovieModel";
 import Contents from "../component/Contents";
 import styled from "styled-components";
 import useIntersectionObserver from "../utils/useIntersectionObserver";
+
 import Footer from "../component/Footer";
 
 export default function Search() {
