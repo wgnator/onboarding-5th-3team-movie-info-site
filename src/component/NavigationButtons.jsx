@@ -63,7 +63,7 @@ const Button = styled.button`
     cursor: pointer;
   }
   div{
-    font-size: 14px;
+    font-size: 17px;
     font-weight: 600;
     :hover{
       color: #299da5;

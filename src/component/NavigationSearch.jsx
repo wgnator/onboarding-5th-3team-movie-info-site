@@ -18,11 +18,6 @@ export default function NavigationSearch() {
   useEffect(() => {
     getMovies();
   },[])
-    const otherOneTouch = ((event) => {
-  
-  	(document.activeElement).blur() // 현재 활성화된 element의 blur 이벤트 호출
-     
-  }, []);
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -34,13 +29,6 @@ export default function NavigationSearch() {
     }
     document.addEventListener("mousedown", handleClickOutside);
   }, [searchBoxRef]);
-  useEffect(() => {
-    if(searchShow){
-      document.body.style= `overflow:hidden`;
-    }else{
-      document.body.style= `overflow:auto`;
-    }
-  },[searchShow])
   
   useEffect(() => {
     if (movies) {
@@ -172,7 +160,7 @@ export default function NavigationSearch() {
                   >
                     <Item>{item}</Item>
                     <ItemRemove onClick={removeRecentlySearch}>
-                      삭제
+                      X
                     </ItemRemove>
                   </SearchItem>
                 )
@@ -253,7 +241,7 @@ const RecentWrap = styled.div`
     padding-bottom: 5px;
   `}
   ::-webkit-scrollbar {
-    width: 1.3rem;
+    display: none;
   }
 `;
 const SearchOption = styled.div`
@@ -302,9 +290,8 @@ const Item = styled.div`
 `;
 const ItemRemove = styled.div`
   background-color: transparent;
-  border: 1px solid black;
   color: black;
   :hover{
-    background-color: red;
+    color: red;
   }
 `;
