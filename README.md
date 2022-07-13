@@ -62,11 +62,13 @@
 ## 1. 프로젝트 
 
 - 해당 사이트는 총 두개의 탭을 가집니다. (`검색`, `즐겨찾기`)
+![검색 기록 없음]()
+![검색기록 2]()
 
 <p>
-<img src="https://user-images.githubusercontent.com/91608021/178653917-db2dd0eb-e3aa-4294-84d7-3ef87fc37041.JPG" width="30%">
+<img src="https://user-images.githubusercontent.com/91608021/178655638-e7c4346e-ce31-4586-9f30-181c108f2744.JPG" width="30%">
 <img src="https://user-images.githubusercontent.com/91608021/178654135-fee99796-6130-4192-a3ba-8aeded675d5e.JPG" width="30%">
- <img src="https://user-images.githubusercontent.com/91608021/178653924-9b3e2c1b-9fa0-4737-a7e2-60ef407af4f6.JPG" width="30%">
+ <img src="https://user-images.githubusercontent.com/91608021/178655643-5b7c2dac-f66e-4bfc-aa24-8825a0aa8a3e.JPG" width="30%">
 </p>
                                                                                                                             
 - 초기 화면은 검색 탭에서 시작합니다.
