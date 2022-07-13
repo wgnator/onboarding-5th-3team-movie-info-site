@@ -1,22 +1,20 @@
 
 import React from "react";
 import styled from "styled-components";
-import { ReactComponent as LogoIco } from "../images/icons/netflix-svgrepo-com.svg";
 import { useNavigate } from "react-router";
 import NavigationButtons from "./NavigationButtons";
 import NavigationSearch from "./NavigationSearch";
 
-export default function Navigation({movies}) {
+export default function Navigation({ movies }) {
   const navigate = useNavigate();
 
   return (
     <Container>
       <Wrap>
         <LogoWrap onClick={() => navigate("/")}>
-          <LogoIco />
           <span>Movie</span>
         </LogoWrap>
-        <NavigationSearch movies={movies}/>
+        <NavigationSearch movies={movies} />
         <NavigationButtons />
       </Wrap>
     </Container>
@@ -24,7 +22,7 @@ export default function Navigation({movies}) {
 }
 
 const Container = styled.header`
-  position: fixed;
+  position: sticky;
   height: 70px;
   width: 100%;
   background-color: #262633;

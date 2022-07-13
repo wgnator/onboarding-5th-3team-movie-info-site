@@ -26,11 +26,9 @@ const Contents = ({ movies }) => {
 export default Contents;
 
 const Container = styled.div`
-  overflow: hidden;
   padding: 0 2rem;
   gap: 2rem;
-  /* height: 100%; */
-  padding-top: 80px;
+  padding-top: 20px;
   padding-bottom: 20px;
   display: flex;
   flex-wrap: wrap;
