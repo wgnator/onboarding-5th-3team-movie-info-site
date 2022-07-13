@@ -88,12 +88,13 @@
 </p>
 
 ### 1.C. 즐겨찾기
+![즐겨찾기 1]()
 
 - 즐겨 찾기 탭을 클릭하면 즐겨찾기로 진입합니다.
 - 즐겨찾기 페이지에는 즐겨찾기 된 영화리스트가 보여 집니다. (검색 했을 때와 동일)
-<p>
-<img src="https://user-images.githubusercontent.com/91608021/178653581-81433cf6-4d2c-475c-82d2-2beded5c595b.JPG"  width="30%">
-<img src="https://user-images.githubusercontent.com/91608021/178653586-dfeb4311-c2fb-40ff-88f4-883901490894.JPG"  width="30%">
+
+<img src="https://user-images.githubusercontent.com/91608021/178655964-cbc92dae-daed-4697-a68b-b0eda1ffd7a5.JPG"  width="30%">
+<img src="https://user-images.githubusercontent.com/91608021/178655925-c697987f-706b-42c8-9cd3-83dcd4bd7832.JPG"  width="30%">
 </p>
 
 ## 2. 구현 기능
