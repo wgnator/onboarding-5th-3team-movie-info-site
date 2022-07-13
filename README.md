@@ -144,18 +144,18 @@ interface User {
 - 버튼
   - 기본 상태에서는 로그인 버튼만 활성화 되어 있으며 , 다른 버튼은 보이지 않으며 클릭시 로그인 페이지로 이동
   - 그 외 로그인을 활성화 하게 되면 , 즐겨찾기와 로그아웃을 표시해주며 클릭시 그에 맞는 즐겨찾기 페이지 , 로그아웃 기능을 
-### 2.C. movie data fetch module 구현 (한운기)
+### 2.C-1. movie data fetch module 구현 (한운기)
 - tmdb 사이트의 API 를 통해 정보를 가져오기 위한 fetch module 및 custom hook 구현
    - useMovieModel hook 포함사항: 
        - getMovies(): tmdb 사이트의 현재 most popular 데이터를 불러오기 (메인 페이지에서 활용)
        - getMovieById(): 특정 영화에 대한 자세한 정보 불러오기 (Thumbnail 클릭시 나타나는 Card에서 활용)
        - getMoviesByIds(): 여러개의 특정 영화들의 정보를 한꺼번에 불러오기 (즐겨찾기 페이지에서 활용)
        - searchMovies(): 특정 키워드를 내포하는 영화들을 검색하기
-### 2.C. user data fetch module 구현 (한운기)
+### 2.C-2. user data fetch module 구현 (한운기)
 - json-server를 활용한 사용자 정보에 대한 CRUD 를 위한 module 및 custom hook 구현
     - AccessUserDB 모듈 기능:
         - getUsers() / getUser() / createUser() / updateUser() / deleteUser()
-### 2.C. infinite scroll 기능 구현 (한운기)
+### 2.C-3. infinite scroll 기능 구현 (한운기)
 - main 및 search 페이지에서 Intersection Observer를 활용하여 infinite scroll 구현
     - useIntersectionObserver: infinite scroll을 위한 hook 구현
 - search page 로직 구현: parameter 변화에 따른 새로운 영화 불러오기 로직 구현
