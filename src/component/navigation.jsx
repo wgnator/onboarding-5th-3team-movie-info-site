@@ -34,12 +34,12 @@ const Wrap = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 16px;
-  width:  93vw;
+  width: 93vw;
   margin: 0 auto;
 `;
 const LogoWrap = styled.div`
-font-family: 'Oswald', sans-serif;
-  src: url('https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap');
+  font-family: "Oswald", sans-serif;
+  src: url("https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap");
   transition: all 400ms ease;
   cursor: pointer;
   height: 30px;

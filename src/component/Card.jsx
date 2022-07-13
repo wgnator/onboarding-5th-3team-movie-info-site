@@ -8,13 +8,14 @@ import AccessUserDB from "../models/AccessUserDB";
 
 const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
 
-export default function Card({ movieId, closeAction, favorite , setFavorite }) {
+export default function Card({ movieId, closeAction, favorite, setFavorite }) {
   const { movie, getMovieById } = useMovieModel();
   const [marked, setMarked] = useState(favorite);
   const loggedInUser = getLoggedInUser();
   const id = loggedInUser?.id;
   const favorites = loggedInUser?.favorites;
   const [isImageReady, setIsImageReady] = useState(false);
+  const [imageLoadFailed, setImageLoadFailed] = useState(false);
 
   useEffect(() => {
     getMovieById(movieId);
@@ -38,14 +39,26 @@ export default function Card({ movieId, closeAction, favorite , setFavorite }) {
   return (
     <Container onClick={(e) => e.target === e.currentTarget && closeCard()}>
       <Modal isImageReady={isImageReady}>
-         <Image src={`${IMAGE_BASE_URL}${movie?.backdrop_path}`} alt="movie image" onError={() => setIsImageReady(true)} onLoad={() => setIsImageReady(true)} />
+        {imageLoadFailed ? (
+          ""
+        ) : (
+          <Image
+            src={`${IMAGE_BASE_URL}${movie?.backdrop_path}`}
+            alt="movie image"
+            onError={() => {
+              setImageLoadFailed(true);
+              setIsImageReady(true);
+            }}
+            onLoad={() => setIsImageReady(true)}
+          />
+        )}
         <MovieInfo>
           {id && (
             <PlusButtonWrapper
               onClick={() => {
                 toggleFavorite(movieId);
                 setMarked((prev) => !prev);
-                setFavorite((prev) => !prev)
+                setFavorite((prev) => !prev);
               }}
               marked={marked}
             >

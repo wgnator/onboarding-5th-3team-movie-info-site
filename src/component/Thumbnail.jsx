@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Card from "./Card";
-import { ReactComponent as FavoriteIco } from "../images/icons/favorite-svgrepo-com.svg"
+import { ReactComponent as FavoriteIco } from "../images/icons/favorite-svgrepo-com.svg";
 export default function Thumbnail({ movie, updateFavorite, isFavorite }) {
   const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
   const [card, setCard] = useState(false);
-  const [favorited,setFavorited] = useState();
-
-
+  const [favorited, setFavorited] = useState();
+  const [imageLoadFailed, setImageLoadFailed] = useState(false);
   const handleThumbnailClick = (movieId) => {
     setCard(movieId);
   };
-  useEffect(()=>{
-    setFavorited(isFavorite)
-  },[])
+  useEffect(() => {
+    setFavorited(isFavorite);
+  }, []);
   return (
     <>
       <ThumbnailContainer onClick={() => handleThumbnailClick(movie.id)}>
         <DarkVeil movieTitle={movie.title} />
-        <Poster alt="poster" src={`${IMAGE_BASE_URL}${movie.poster_path}`} />
-        {favorited && <FavoriteIco/>}
+        {imageLoadFailed ? <div> {movie.title}</div> : <Poster alt="poster" src={`${IMAGE_BASE_URL}${movie.poster_path}`} onError={() => setImageLoadFailed(true)} />}
+        {favorited && <FavoriteIco />}
       </ThumbnailContainer>
       {card && <Card movieId={card} closeAction={() => setCard(false)} favorite={isFavorite} setFavorite={setFavorited} toggleFavorite={updateFavorite} />}
     </>
@@ -45,12 +44,12 @@ const ThumbnailContainer = styled.li`
   &:hover {
     transform: scale(1.05);
   }
-  svg{
+  svg {
     position: absolute;
     width: 50px;
     height: 50px;
     fill: yellow;
-    stroke:gray;
+    stroke: gray;
     right: 0.4rem;
   }
 `;
