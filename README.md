@@ -59,7 +59,7 @@
  ┣ 📜index.jsx
  ┗ 📜theme.js
 ```
-## 1. 필수 기능 정의
+## 1. 프로젝트 
 
 - 해당 사이트는 총 두개의 탭을 가집니다. (`검색`, `즐겨찾기`)
 
@@ -99,7 +99,7 @@
 <img src="https://user-images.githubusercontent.com/77876601/177663754-bd34ec5d-36ec-402a-bac8-f710e512ad6e.jpeg"  width="30%">
 </p>
 
-## 2. 팀에서 추가한 기능
+## 2. 구현 기능
 
 ### 2.A. 사용자
 
