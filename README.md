@@ -66,9 +66,9 @@
 ### 1.A. 검색!
 
 <p>
-<img src="https://user-images.githubusercontent.com/77876601/177663670-e7b41c0a-d548-4163-8686-869819297fca.jpeg" width="30%">
-<img src="https://user-images.githubusercontent.com/77876601/177663688-6f99fe0e-fea4-46a9-b97b-8e438b40f549.jpeg" width="30%">
-<img src="https://user-images.githubusercontent.com/77876601/177663692-b47f7fb6-d9db-42fe-ab99-a517cdc3bc7b.jpeg" width="30%">
+<img src="https://user-images.githubusercontent.com/91608021/178653544-8b16113f-304e-4538-9a6c-c0caf858aafb.JPG" width="30%">
+<img src="https://user-images.githubusercontent.com/91608021/178653548-298b18e0-6d1e-4394-b96b-044807fb5ad0.JPG" width="30%">
+<img src="https://user-images.githubusercontent.com/91608021/178653556-c045268e-2cfa-411d-8287-6252d4e3e714.JPG" width="30%">
 </p>
                                                                                                                             
 - 초기 화면은 검색 탭에서 시작합니다.
@@ -85,8 +85,8 @@
 - 해당 페이지에는 즐겨찾기 `button` 요소를 가집니다.
 - 즐겨 찾기를 누르면 즐겨찾기가 다시 누르면 즐겨찾기 취소로 표현되어야 합니다. (icon or 문자열)
 <p>
-<img src="https://user-images.githubusercontent.com/77876601/177663762-b8d70195-d796-4d15-8b90-6531b958a55f.jpeg" width="30%">
-<img src="https://user-images.githubusercontent.com/77876601/177663765-89ab2e8e-28ca-41fa-a2ba-b304dac72255.jpeg" width="30%">
+<img src="https://user-images.githubusercontent.com/91608021/178653423-03eaaba6-44d2-4291-9ac7-91fa4c838a16.JPG" width="30%">
+<img src="https://user-images.githubusercontent.com/91608021/178653445-2afe5b15-34f5-464c-abb4-91f492838b4d.JPG" width="30%">
 </p>
 
 ### 1.C. 즐겨찾기
@@ -94,9 +94,8 @@
 - 즐겨 찾기 탭을 클릭하면 즐겨찾기로 진입합니다.
 - 즐겨찾기 페이지에는 즐겨찾기 된 영화리스트가 보여 집니다. (검색 했을 때와 동일)
 <p>
-<img src="https://user-images.githubusercontent.com/77876601/177663749-7108db66-a415-4aeb-b42a-1cac8d834f32.jpeg"  width="30%">
-<img src="https://user-images.githubusercontent.com/77876601/177663752-5ed781ce-7696-48e7-9a1b-0ef82b10bea0.jpeg"  width="30%">
-<img src="https://user-images.githubusercontent.com/77876601/177663754-bd34ec5d-36ec-402a-bac8-f710e512ad6e.jpeg"  width="30%">
+<img src="https://user-images.githubusercontent.com/91608021/178653581-81433cf6-4d2c-475c-82d2-2beded5c595b.JPG"  width="30%">
+<img src="https://user-images.githubusercontent.com/91608021/178653586-dfeb4311-c2fb-40ff-88f4-883901490894.JPG"  width="30%">
 </p>
 
 ## 2. 구현 기능
