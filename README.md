@@ -149,9 +149,9 @@ interface User {
          - getMoviesByIds(): 여러개의 특정 영화들의 정보를 한꺼번에 불러오기 (즐겨찾기 페이지에서 활용)
          - searchMovies(): 특정 키워드를 내포하는 영화들을 검색하기 (검색페이지에서 활용)
 - user data fetch module 
- - json-server를 활용한 사용자 정보에 대한 CRUD 를 위한 module 및 custom hook 구현
-    - AccessUserDB 모듈 기능:
-        - getUsers() / getUser() / createUser() / updateUser() / deleteUser()
+  - json-server를 활용한 사용자 정보에 대한 CRUD 를 위한 module 및 custom hook 구현
+     - AccessUserDB 모듈 기능:
+         - getUsers() / getUser() / createUser() / updateUser() / deleteUser()
 ### 2.D. infinite scroll 기능 구현 (한운기)
 - main 및 search 페이지에서 Intersection Observer를 활용하여 infinite scroll 구현
     - useIntersectionObserver: infinite scroll을 위한 hook 구현
