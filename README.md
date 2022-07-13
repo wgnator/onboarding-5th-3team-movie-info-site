@@ -88,11 +88,10 @@
 </p>
 
 ### 1.C. 즐겨찾기
-![즐겨찾기 1]()
 
 - 즐겨 찾기 탭을 클릭하면 즐겨찾기로 진입합니다.
 - 즐겨찾기 페이지에는 즐겨찾기 된 영화리스트가 보여 집니다. (검색 했을 때와 동일)
-
+<p>
 <img src="https://user-images.githubusercontent.com/91608021/178655964-cbc92dae-daed-4697-a68b-b0eda1ffd7a5.JPG"  width="30%">
 <img src="https://user-images.githubusercontent.com/91608021/178655925-c697987f-706b-42c8-9cd3-83dcd4bd7832.JPG"  width="30%">
 </p>
