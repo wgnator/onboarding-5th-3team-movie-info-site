@@ -67,8 +67,8 @@
 
 <p>
 <img src="https://user-images.githubusercontent.com/91608021/178653544-8b16113f-304e-4538-9a6c-c0caf858aafb.JPG" width="30%">
-<img src="https://user-images.githubusercontent.com/91608021/178653548-298b18e0-6d1e-4394-b96b-044807fb5ad0.JPG" width="30%">
 <img src="https://user-images.githubusercontent.com/91608021/178653556-c045268e-2cfa-411d-8287-6252d4e3e714.JPG" width="30%">
+<img src="https://user-images.githubusercontent.com/91608021/178653548-298b18e0-6d1e-4394-b96b-044807fb5ad0.JPG" width="30%">
 </p>
                                                                                                                             
 - 초기 화면은 검색 탭에서 시작합니다.
