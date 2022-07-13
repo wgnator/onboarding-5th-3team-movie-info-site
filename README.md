@@ -135,6 +135,7 @@ interface User {
 - 검색창
   - useRef로 input Value를 관리하여 검색기능 구현
   - useNavigation Hook 으로 url params를 변경하여 검색 페이지에서 영화 제목을 다룰 수 있게 사용
+  - Button은 불필요한 요소로 생각 되어 제외하게 되었습니다
 - 검색 박스
   - 검색어를 입력 할 시 localStorage로 저장하며 , useState Hook에 저장하고 , 호출하여 Box에 표시
   - onChange 함수로 input Value를 받아와 debounce 함수로 api 호출을 최대한 적게 사용
