@@ -7,11 +7,11 @@
 ## 팀원 및 역할
 | 이름   | 기능구현 및역할     | 
 | ------ | ------------------- | 
-| 김영호 |  | 
+| 김영호 | Contents, Thumbnail | 
 | 이성진 | User model & logic, fuzzy search match, Search result hightlighting | 
 | 정윤서 | Navigation , Search Input | 
-| 조혜빈 |  | 
-| 한운기 |  | 
+| 조혜빈 | Card Component DetailPage | 
+| 한운기 | movie/user data fetch module, infinite scroll, search page 로직 | 
 
 ## 프로젝트 구조
 ```
@@ -158,3 +158,19 @@ interface User {
 - main 및 search 페이지에서 Intersection Observer를 활용하여 infinite scroll 구현
     - useIntersectionObserver: infinite scroll을 위한 hook 구현
 - search page 로직 구현: parameter 변화에 따른 새로운 영화 불러오기 로직 구현
+
+### 2.D. Contents , Thumbnail 구현 (김영호)
+-Contents 
+  - props로 전달 받은 movies에 map 함수를 사용해 UI 구현
+
+
+-Thumbnail
+  - props로 전달 받은 movie를 통해 UI 구현
+
+### 2.E. Card 컴포넌트 상세페이지 구현 (조혜빈)
+- Card 컴포넌트 UI 구현
+- movieId를 받아와서 getMovieId()함수에 구현된 api로 영화상세정보 요청.
+- image.onLoad로 이미지 로딩이 완료될때 상세페이지가 뜨도록 구현
+- 즐겨찾기 추가 버튼 클릭시 userDBService.js에서 구현한 api로 해당 user의 즐겨찾기 목록 수정, localStorage에 있는 user정보도 수정.
+- 즐겨찾기 버튼스타일 토글기능 추가
+
