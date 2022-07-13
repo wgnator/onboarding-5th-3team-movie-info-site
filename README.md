@@ -1,5 +1,64 @@
 # 영화 정보 사이트
+## 프로젝트 소개
+- 주제 : 영화 검색 사이트
+- api : tmbd api 사용
+- 기간: 2022.07.07~2022.07.13
 
+## 팀원 및 역할
+| 이름   | 기능구현 및역할     | 
+| ------ | ------------------- | 
+| 김영호 |  | 
+| 이성진 |  | 
+| 정윤서 | Navigation , Search Input | 
+| 조혜빈 |  | 
+| 한운기 |  | 
+
+## 프로젝트 구조
+```
+📂src
+ ┣ 📂component
+ ┃ ┣ 📜Card.jsx
+ ┃ ┣ 📜Contents.jsx
+ ┃ ┣ 📜CreateAccountForm.jsx
+ ┃ ┣ 📜Footer.jsx
+ ┃ ┣ 📜HightlightText.jsx
+ ┃ ┣ 📜Layout.jsx
+ ┃ ┣ 📜LoginForm.jsx
+ ┃ ┣ 📜Navigation.jsx
+ ┃ ┣ 📜NavigationButtons.jsx
+ ┃ ┣ 📜NavigationSearch.jsx
+ ┃ ┣ 📜SearchBox.jsx
+ ┃ ┗ 📜Thumbnail.jsx
+ ┣ 📂const
+ ┃ ┗ 📜consts.js
+ ┣ 📂database
+ ┃ ┗ 📜users.json
+ ┣ 📂http
+ ┃ ┗ 📜httpRequest.js
+ ┣ 📂images/icons
+ ┣ 📂models
+ ┃ ┣ 📜AccessUserDB.js
+ ┃ ┗ 📜useMovieModel.js
+ ┣ 📂pages
+ ┃ ┣ 📜CreateAccount.jsx
+ ┃ ┣ 📜Favorites.jsx
+ ┃ ┣ 📜Login.jsx
+ ┃ ┣ 📜Main.jsx
+ ┃ ┣ 📜NotFound.jsx
+ ┃ ┗ 📜Search.jsx
+ ┣ 📂services
+ ┃ ┣ 📜movieDataService.js
+ ┃ ┗ 📜userDBService.js
+ ┣ 📂utils
+ ┃ ┣ 📜userAccount.js
+ ┃ ┣ 📜useIntersectionObserver.js
+ ┃ ┗ 📜validation.js
+ ┣ 📜App.jsx
+ ┣ 📜GlobalStyle.js
+ ┣ 📜Router.jsx
+ ┣ 📜index.jsx
+ ┗ 📜theme.js
+```
 ## 1. 필수 기능 정의
 
 - 해당 사이트는 총 두개의 탭을 가집니다. (`검색`, `즐겨찾기`)
@@ -69,3 +128,13 @@ interface User {
 - favorites : like와 같다
 - (선택) watched : 영화를 시청한 횟수를 기록한다
 - (선택) 검색 기능에서 해당 정보를 불러와 내가 봤던 영화를 표시할 수 있다
+
+### 2.B. 검색
+- 검색창
+  - useRef로 input Value를 관리하여 검색기능 구현
+  - useNavigation Hook 으로 url params를 변경하여 검색 페이지에서 영화 제목을 다룰 수 있게 사용
+- 검색 박스
+  - 검색어를 입력 할 시 localStorage로 저장하며 , useState Hook에 저장하고 , 호출하여 Box에 표시
+  - onChange 함수로 input Value를 받아와 debounce 함수로 api 호출을 최대한 적게 사용
+  - 반영되는 글자로 영화 제목을 불러와 추천검색어로 표시
+  - 박스에 나온 요소를 클릭 할 시 , useNavigation Hook으로 url params로 변경하여 검색페이지로 이동
