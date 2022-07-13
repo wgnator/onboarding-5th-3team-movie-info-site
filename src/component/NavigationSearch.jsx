@@ -84,7 +84,6 @@ export default function NavigationSearch() {
     event.stopPropagation();
     const targetRecently = event.target.parentElement.innerText.split("\n",1).toString()
     const recentArr = recentSearches.filter((word) => word !== targetRecently);
-    console.log("타겟",targetRecently,"현재",recentSearches ,"변경",recentArr);
     handleLocalStorage(recentArr)
     setRecentSearches(recentArr);
     

@@ -54,7 +54,6 @@ const Container = styled.div`
 const Button = styled.button`
   display: ${(props) => (props.hasShow ? "block" : "none")};
   background-color: ${theme.backColor};
-  /* border: 1px solid white; */
   border: none;
   border-radius: 6px;
   padding: 0.3rem 1rem;
