@@ -63,11 +63,9 @@
 
 - 해당 사이트는 총 두개의 탭을 가집니다. (`검색`, `즐겨찾기`)
 
-### 1.A. 검색!
-
 <p>
 <img src="https://user-images.githubusercontent.com/91608021/178653917-db2dd0eb-e3aa-4294-84d7-3ef87fc37041.JPG" width="30%">
-<img src="https://user-images.githubusercontent.com/91608021/178653548-298b18e0-6d1e-4394-b96b-044807fb5ad0.JPG" width="30%">
+<img src="https://user-images.githubusercontent.com/91608021/178654135-fee99796-6130-4192-a3ba-8aeded675d5e.JPG" width="30%">
  <img src="https://user-images.githubusercontent.com/91608021/178653924-9b3e2c1b-9fa0-4737-a7e2-60ef407af4f6.JPG" width="30%">
 </p>
                                                                                                                             
