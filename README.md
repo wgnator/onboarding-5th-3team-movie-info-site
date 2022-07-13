@@ -157,9 +157,9 @@ interface User {
     - useIntersectionObserver: infinite scroll을 위한 hook 구현
 
 ### 2.E. Contents , Thumbnail 구현 (김영호)
--Contents 
+- Contents 
   - props로 전달 받은 movies에 map 함수를 사용해 UI 구현
--Thumbnail
+- Thumbnail
   - props로 전달 받은 movie를 통해 UI 구현
 
 ### 2.F. Card 컴포넌트 상세페이지 구현 (조혜빈)
