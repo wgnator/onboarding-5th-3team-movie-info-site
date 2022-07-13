@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useMovieModel } from "../models/useMovieModel";
 import Contents from "../component/Contents";
+import Footer from "../component/Footer";
 import styled from "styled-components";
 import useIntersectionObserver from "../utils/useIntersectionObserver";
 
@@ -32,6 +33,7 @@ export default function Main() {
     <>
       <Contents movies={movies} />
       {hasReachedLastPage ? "" : <EndOfPageDetector ref={ref} />}
+      <Footer />
     </>
   );
 }

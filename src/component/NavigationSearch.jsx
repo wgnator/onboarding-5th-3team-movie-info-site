@@ -18,6 +18,11 @@ export default function NavigationSearch() {
   useEffect(() => {
     getMovies();
   },[])
+    const otherOneTouch = ((event) => {
+  
+  	(document.activeElement).blur() // 현재 활성화된 element의 blur 이벤트 호출
+     
+  }, []);
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -36,6 +41,7 @@ export default function NavigationSearch() {
       document.body.style= `overflow:auto`;
     }
   },[searchShow])
+  
   useEffect(() => {
     if (movies) {
       getRecentlySearch();
@@ -84,7 +90,7 @@ export default function NavigationSearch() {
     handleLocalStorage(recentArr)
     setRecentSearches(recentArr !== null && recentArr.split(","));
   };
-  
+
   const removeRecentlySearch = (event) => {
     if(recentSearches.length === 1) setSearchShow(false) // 마지막 검색어 삭제되면 searchBox 삭제 !!
     event.stopPropagation();
@@ -110,6 +116,7 @@ export default function NavigationSearch() {
     setSearchShow(true);
     processChanges(searchInput)
   };
+  
   const debounce = (callback,delay) => {
     let timer;
     return (...args) => {
@@ -216,12 +223,12 @@ const SearchBox = styled.div`
   display: flexbox;
   width: 18vw;
   font-size: 16px;
-  
-  
+
   border-radius: 0 0 5px 5px;
   background-color: white;
   visibility: hidden;
   border: 1px solid #d2cbcbcc;
+  
   ${(props) =>
     props.show &&
     `
