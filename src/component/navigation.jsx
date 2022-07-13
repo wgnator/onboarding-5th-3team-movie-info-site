@@ -21,7 +21,8 @@ export default function Navigation({ movies }) {
 
 const Container = styled.header`
   position: sticky;
-  height: 70px;
+  min-height: 70px;
+  height: 7%;
   width: 100%;
   background-color: #262633;
   border-bottom: 2px solid black;
