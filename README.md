@@ -134,7 +134,7 @@ interface User {
   - Button은 불필요한 요소로 생각 되어 제외하게 되었습니다
 - 검색 박스
   - 검색어를 입력 할 시 localStorage로 저장하며 , useState Hook에 저장하고 , 호출하여 Box에 표시
-  - onChange 함수로 input Value를 받아와 debounce 함수로 api 호출을 최대한 적게 사용
+  - onChange 함수로 input Value를 받아와 throttle 함수로 api 호출을 최대한 적게 사용
   - 반영되는 글자로 영화 제목을 불러와 추천검색어로 표시
   - 박스에 나온 요소를 클릭 할 시 , useNavigation Hook으로 url params로 변경하여 검색페이지로 이동
 - 버튼
